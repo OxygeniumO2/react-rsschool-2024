@@ -1,2 +1,2 @@
-. "$(dirname "$0")/../../.husky/_/husky.sh"
+. "$(dirname "$0")/../../.husky/_/h"
 npm run lint
