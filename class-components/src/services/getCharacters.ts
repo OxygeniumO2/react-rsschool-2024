@@ -5,14 +5,14 @@ interface GetCharacters {
   page?: number;
   limit?: number;
 }
-interface GetCharactersResp {
+export interface GetCharactersResp {
   characters: Character[];
   currentPage: number;
   pageSize: number;
   total: number;
 }
 
-interface Character {
+export interface Character {
   id: number;
   name: string;
 }

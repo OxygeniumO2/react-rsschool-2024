@@ -1,38 +1,43 @@
 import React from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
-import { getCharacters } from './services/getCharacters';
+import SearchBar from './components/SearchBar/SearchBar';
+import { SEARCH_TEXT_OXY } from './constants/localStorageKeys';
+import { Character, getCharacters } from './services/getCharacters';
+import CardList from './components/CardList/CardList';
 
 class App extends React.Component {
+  state: {
+    searchText: string;
+    characters: Character[] | [];
+  } = {
+    searchText: localStorage.getItem(SEARCH_TEXT_OXY) || '',
+    characters: [],
+  };
+
+  handleSearch = (searchText: string) => {
+    this.setState({ searchText });
+  };
+
+  handleSearchLS = async () => {
+    localStorage.setItem(SEARCH_TEXT_OXY, this.state.searchText);
+    const { characters } = await getCharacters({ name: this.state.searchText });
+    this.setState({
+      characters: characters,
+    });
+  };
+
+  componentDidMount() {
+    this.handleSearchLS();
+  }
   render(): React.ReactNode {
     return (
       <>
-        <div>
-          <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank" rel="noreferrer">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
-        </div>
-        <h1>Vite + React</h1>
-        <div className="card">
-          <p>
-            Edit <code>src/App.tsx</code> and save to test HMR
-          </p>
-          <button
-            onClick={async () => {
-              const sas = await getCharacters();
-              console.log(sas);
-            }}
-          >
-            Click
-          </button>
-        </div>
-        <p className="read-the-docs">
-          Click on the Vite and React logos to learn more
-        </p>
+        <SearchBar
+          searchText={this.state.searchText}
+          handleSearch={this.handleSearch}
+          handleButtonClick={this.handleSearchLS}
+        />
+        <CardList cards={this.state.characters} />
       </>
     );
   }
