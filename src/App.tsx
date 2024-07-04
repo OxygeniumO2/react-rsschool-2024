@@ -52,7 +52,7 @@ class App extends React.Component {
     return (
       <>
         <button
-          style={{ position: 'absolute', top: '5%', right: '8%' }}
+          style={{ position: 'absolute', top: '50px', right: '8%' }}
           onClick={this.handleClickError}
         >
           Simulate Error
