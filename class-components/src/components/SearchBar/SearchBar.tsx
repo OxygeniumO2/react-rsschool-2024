@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './searchBar.module.css';
 
 type SearchBarProps = {
   searchText: string;
@@ -12,18 +13,28 @@ class SearchBar extends React.Component<SearchBarProps> {
     this.props.handleSearch(searchText);
   };
 
+  handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      this.props.handleButtonClick();
+    }
+  };
+
   render() {
     return (
-      <div>
+      <div className={styles.searchBar}>
         <input
+          className={styles.searchInput}
           type="text"
           name=""
           id=""
           placeholder="search"
           value={this.props.searchText}
           onChange={this.handleInputChange}
+          onKeyDown={this.handleKeyDown}
         />
-        <button onClick={this.props.handleButtonClick}>Search</button>
+        <button onClick={this.props.handleButtonClick} type="button">
+          Search
+        </button>
       </div>
     );
   }

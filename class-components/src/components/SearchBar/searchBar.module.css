@@ -1,0 +1,17 @@
+.searchBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.searchInput {
+  padding: 5px 10px;
+  outline: none;
+  border: 2px solid gray;
+  border-radius: 5px;
+  font-size: 1.1rem;
+
+  &:focus {
+    border-color: blue;
+  }
+}

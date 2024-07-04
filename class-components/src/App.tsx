@@ -9,33 +9,59 @@ class App extends React.Component {
   state: {
     searchText: string;
     characters: Character[] | [];
+    counter: number;
   } = {
     searchText: localStorage.getItem(SEARCH_TEXT_OXY) || '',
     characters: [],
+    counter: 0,
   };
 
   handleSearch = (searchText: string) => {
     this.setState({ searchText });
   };
 
-  handleSearchLS = async () => {
+  handleClickError = () => {
+    this.setState({ counter: this.state.counter + 1 });
+  };
+
+  handleSearchLS = async (initialLoad: boolean = false) => {
+    const currentSearchText = localStorage.getItem(SEARCH_TEXT_OXY) || '';
+    const newSearchText = this.state.searchText;
+
+    if (!initialLoad && currentSearchText === newSearchText) {
+      return;
+    }
+
     localStorage.setItem(SEARCH_TEXT_OXY, this.state.searchText);
+
     const { characters } = await getCharacters({ name: this.state.searchText });
+
     this.setState({
       characters: characters,
     });
   };
 
   componentDidMount() {
-    this.handleSearchLS();
+    this.handleSearchLS(true);
   }
   render(): React.ReactNode {
+    if (this.state.counter === 1) {
+      throw new Error();
+    }
+
     return (
       <>
+        <button
+          style={{ position: 'absolute', top: '5%', right: '8%' }}
+          onClick={this.handleClickError}
+        >
+          Simulate Error
+        </button>
+        <img src="./naruto-logo.png" alt="naruto" />
         <SearchBar
           searchText={this.state.searchText}
           handleSearch={this.handleSearch}
-          handleButtonClick={this.handleSearchLS}
+          handleButtonClick={() => this.handleSearchLS(false)}
         />
         <CardList cards={this.state.characters} />
       </>

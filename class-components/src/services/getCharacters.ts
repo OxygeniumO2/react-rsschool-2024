@@ -15,6 +15,15 @@ export interface GetCharactersResp {
 export interface Character {
   id: number;
   name: string;
+  images: string[];
+  debut: {
+    appearsIn?: string;
+  };
+  personal: {
+    sex?: string;
+    clan?: string;
+    classification?: string | string[];
+  };
 }
 
 export async function getCharacters({
