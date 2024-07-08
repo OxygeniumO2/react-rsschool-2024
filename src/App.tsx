@@ -10,10 +10,12 @@ class App extends React.Component {
     searchText: string;
     characters: Character[] | [];
     counter: number;
+    isLoading: boolean;
   } = {
     searchText: localStorage.getItem(SEARCH_TEXT_OXY) || '',
     characters: [],
     counter: 0,
+    isLoading: true,
   };
 
   handleSearch = (searchText: string) => {
@@ -34,10 +36,13 @@ class App extends React.Component {
 
     localStorage.setItem(SEARCH_TEXT_OXY, this.state.searchText);
 
+    this.setState({ isLoading: true });
+
     const { characters } = await getCharacters({ name: this.state.searchText });
 
     this.setState({
       characters: characters,
+      isLoading: false,
     });
   };
 
@@ -63,7 +68,10 @@ class App extends React.Component {
           handleSearch={this.handleSearch}
           handleButtonClick={() => this.handleSearchLS(false)}
         />
-        <CardList cards={this.state.characters} />
+        <CardList
+          cards={this.state.characters}
+          isLoading={this.state.isLoading}
+        />
       </>
     );
   }
