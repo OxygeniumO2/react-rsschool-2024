@@ -26,14 +26,16 @@ export interface Character {
   };
 }
 
-export async function getCharacters({
-  name = '',
-  page = 1,
-  limit = 10,
-}: GetCharacters = {}): Promise<GetCharactersResp> {
-  const data = await fetch(
-    `${baseUrl}/characters?limit=${limit}&name=${name}&page=${page}`
-  );
+export const narutoAPI = {
+  async getCharacters({
+    name = '',
+    page = 1,
+    limit = 10,
+  }: GetCharacters = {}): Promise<GetCharactersResp> {
+    const data = await fetch(
+      `${baseUrl}/characters?limit=${limit}&name=${name}&page=${page}`
+    );
 
-  return await data.json();
-}
+    return await data.json();
+  },
+};

@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar/SearchBar';
 import { SEARCH_TEXT_OXY } from './constants/localStorageKeys';
-import { Character, getCharacters } from './services/getCharacters';
+import { Character, narutoAPI } from './services/narutoApi';
 import CardList from './components/CardList/CardList';
 
 class App extends React.Component {
@@ -34,7 +34,9 @@ class App extends React.Component {
 
     localStorage.setItem(SEARCH_TEXT_OXY, this.state.searchText);
 
-    const { characters } = await getCharacters({ name: this.state.searchText });
+    const { characters } = await narutoAPI.getCharacters({
+      name: this.state.searchText,
+    });
 
     this.setState({
       characters: characters,
