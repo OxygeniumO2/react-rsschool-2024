@@ -5,7 +5,7 @@ type CardProps = {
   card: Character;
 };
 
-const Card = ({ card }: CardProps) => {
+export const Card = ({ card }: CardProps) => {
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : './no-image.png';
 
@@ -46,5 +46,3 @@ const Card = ({ card }: CardProps) => {
     </div>
   );
 };
-
-export default Card;

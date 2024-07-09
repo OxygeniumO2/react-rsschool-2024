@@ -1,74 +1,70 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import SearchBar from './components/SearchBar/SearchBar';
 import { SEARCH_TEXT_OXY } from './constants/localStorageKeys';
-import { Character, narutoAPI } from './services/narutoApi';
-import CardList from './components/CardList/CardList';
+import { GetCharactersResp, narutoAPI } from './services/narutoApi';
+import { SearchBar } from './components/SearchBar/SearchBar';
+import { useSearchTextLS } from './customHooks/useSearchTextLS';
+import { CardListSection } from './components/CardListSection/CardListSection';
 
-class App extends React.Component {
-  state: {
-    searchText: string;
-    characters: Character[] | [];
-    counter: number;
-  } = {
-    searchText: localStorage.getItem(SEARCH_TEXT_OXY) || '',
-    characters: [],
-    counter: 0,
+export const App = () => {
+  const [searchText, setSearchText] = useSearchTextLS();
+  const [charactersData, setCharactersData] =
+    useState<GetCharactersResp | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleSearch = (searchText: string) => {
+    setSearchText(searchText);
   };
 
-  handleSearch = (searchText: string) => {
-    this.setState({ searchText });
+  const handleCharactersData = async (page: number) => {
+    setIsLoading(() => true);
+
+    const newCharactersData = await narutoAPI.getCharacters({
+      page,
+    });
+    setCharactersData(newCharactersData);
+
+    setIsLoading(() => false);
   };
 
-  handleClickError = () => {
-    this.setState({ counter: this.state.counter + 1 });
-  };
-
-  handleSearchLS = async (initialLoad: boolean = false) => {
+  const handleSearchLS = async (initialLoad: boolean = false) => {
     const currentSearchText = localStorage.getItem(SEARCH_TEXT_OXY) || '';
-    const newSearchText = this.state.searchText;
+    const newSearchText = searchText;
 
     if (!initialLoad && currentSearchText === newSearchText) {
       return;
     }
 
-    localStorage.setItem(SEARCH_TEXT_OXY, this.state.searchText);
+    localStorage.setItem(SEARCH_TEXT_OXY, searchText);
 
-    const { characters } = await narutoAPI.getCharacters({
-      name: this.state.searchText,
+    setIsLoading(() => true);
+
+    const charactersData = await narutoAPI.getCharacters({
+      name: searchText,
     });
 
-    this.setState({
-      characters: characters,
-    });
+    setCharactersData(charactersData);
+
+    setIsLoading(() => false);
   };
 
-  componentDidMount() {
-    this.handleSearchLS(true);
-  }
-  render(): React.ReactNode {
-    if (this.state.counter === 1) {
-      throw new Error();
-    }
+  useEffect(() => {
+    handleSearchLS(true);
+  }, []);
 
-    return (
-      <>
-        <button
-          style={{ position: 'absolute', top: '50px', right: '8%' }}
-          onClick={this.handleClickError}
-        >
-          Simulate Error
-        </button>
-        <img src="./naruto-logo.png" alt="naruto" />
-        <SearchBar
-          searchText={this.state.searchText}
-          handleSearch={this.handleSearch}
-          handleButtonClick={() => this.handleSearchLS(false)}
-        />
-        <CardList cards={this.state.characters} />
-      </>
-    );
-  }
-}
-
-export default App;
+  return (
+    <>
+      <img src="./naruto-logo.png" alt="naruto" />
+      <SearchBar
+        searchText={searchText}
+        handleSearch={handleSearch}
+        handleButtonClick={() => handleSearchLS()}
+      />
+      <CardListSection
+        charactersData={charactersData}
+        isLoading={isLoading}
+        handleCharactersData={handleCharactersData}
+      />
+    </>
+  );
+};

@@ -1,0 +1,37 @@
+.pagination {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 2rem;
+  }
+}
+
+.currentPage {
+  font-weight: 700;
+  color: #fff;
+  background-color: #1c4c5b;
+  border-color: #1c4c5b;
+  cursor: default;
+
+  &:hover {
+    background-color: #1c4c5b;
+    border-color: #1c4c5b;
+  }
+}
+
+.paginationBtn {
+  background-color: #535bf2;
+}
+
+.paginationBtn:disabled {
+  cursor: default;
+  background-color: #1c4c5b;
+
+  &:hover {
+    background-color: #1c4c5b;
+    border-color: #1c4c5b;
+  }
+}
