@@ -51,7 +51,24 @@ export const Pagination = ({
   const pages = generatePageNumbers();
 
   if (totalPages <= 1) {
-    return <h3>Pagination works only for all characters</h3>;
+    return (
+      <div className={styles.pagination}>
+        <button
+          className={styles.paginationBtn}
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Prev
+        </button>
+        <button
+          className={styles.paginationBtn}
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={total < 6}
+        >
+          Next
+        </button>
+      </div>
+    );
   }
 
   return (

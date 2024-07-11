@@ -1,6 +1,19 @@
+.cardListSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
 .cardList {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
-  justify-content: center;
+  flex-shrink: 0;
+  width: 50%;
+  padding: 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: #c3c3c3;
+  margin-bottom: 20px;
 }

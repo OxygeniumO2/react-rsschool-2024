@@ -13,7 +13,7 @@ export interface GetCharactersResp {
 }
 
 export interface Character {
-  id: number;
+  id: string;
   name: string;
   images: string[];
   debut: {
@@ -30,11 +30,17 @@ export const narutoAPI = {
   async getCharacters({
     name = '',
     page = 1,
-    limit = 10,
+    limit = 6,
   }: GetCharacters = {}): Promise<GetCharactersResp> {
     const data = await fetch(
       `${baseUrl}/characters?limit=${limit}&name=${name}&page=${page}`
     );
+
+    return await data.json();
+  },
+
+  async getCharacterById(id: string): Promise<Character> {
+    const data = await fetch(`${baseUrl}/characters/${id}`);
 
     return await data.json();
   },

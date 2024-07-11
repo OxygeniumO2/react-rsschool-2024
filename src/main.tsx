@@ -4,11 +4,43 @@ import './index.css';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
 import { App } from './App.tsx';
 import { ErrorComponent } from './components/ErrorBoundary/ErrorComponent/ErrorComponent.tsx';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom';
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage.tsx';
+import { DetailedCard } from './components/CardList/DetailedCard/DetailedCard.tsx';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Navigate to="/search/1" replace />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: '/search/:page',
+    element: <App />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: ':cardIndex',
+        element: (
+          <DetailedCard character={{}} handleCloseDetailedCard={() => {}} />
+        ),
+      },
+    ],
+  },
+  {
+    path: '/not-found',
+    element: <NotFoundPage />,
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary fallback={<ErrorComponent />}>
-      <App />
+      <RouterProvider router={router} />
     </ErrorBoundary>
   </React.StrictMode>
 );
