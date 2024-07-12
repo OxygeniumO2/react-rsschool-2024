@@ -1,3 +1,4 @@
+import { DEFAULT_NUMBER_OF_ITEMS } from '../constants/constants';
 import baseUrl from './baseUrl';
 
 interface GetCharacters {
@@ -30,7 +31,7 @@ export const narutoAPI = {
   async getCharacters({
     name = '',
     page = 1,
-    limit = 6,
+    limit = DEFAULT_NUMBER_OF_ITEMS,
   }: GetCharacters = {}): Promise<GetCharactersResp> {
     const data = await fetch(
       `${baseUrl}/characters?limit=${limit}&name=${name}&page=${page}`

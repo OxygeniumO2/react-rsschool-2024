@@ -1,5 +1,6 @@
 import styles from './pagination.module.css';
 import { GetCharactersResp } from '../../services/narutoApi';
+import { DEFAULT_NUMBER_OF_ITEMS } from '../../constants/constants';
 
 type PaginationProps = {
   charactersData: GetCharactersResp;
@@ -60,10 +61,13 @@ export const Pagination = ({
         >
           Prev
         </button>
+        <button disabled className={styles.paginationBtn}>
+          {currentPage}
+        </button>
         <button
           className={styles.paginationBtn}
           onClick={() => onPageChange(currentPage + 1)}
-          disabled={total < 6}
+          disabled={total < DEFAULT_NUMBER_OF_ITEMS}
         >
           Next
         </button>

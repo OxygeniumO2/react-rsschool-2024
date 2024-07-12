@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { SEARCH_TEXT_OXY } from '../constants/localStorageKeys';
 
 export function useSearchTextLS(): [string, Dispatch<SetStateAction<string>>] {
@@ -6,9 +6,17 @@ export function useSearchTextLS(): [string, Dispatch<SetStateAction<string>>] {
     return localStorage.getItem(SEARCH_TEXT_OXY) || '';
   });
 
+  const textRef = useRef(text);
+
   useEffect(() => {
-    localStorage.setItem(SEARCH_TEXT_OXY, text);
+    textRef.current = text;
   }, [text]);
+
+  useEffect(() => {
+    return () => {
+      localStorage.setItem(SEARCH_TEXT_OXY, textRef.current);
+    };
+  }, []);
 
   return [text, setText];
 }

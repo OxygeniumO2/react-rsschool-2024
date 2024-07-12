@@ -1,7 +1,7 @@
 import styles from './cardList.module.css';
 import { Character, narutoAPI } from '../../services/narutoApi';
 import { Card } from './Card/Card';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DetailedCard } from './DetailedCard/DetailedCard';
 import { useState } from 'react';
 import { Loader } from '../Loader/Loader';
@@ -14,13 +14,15 @@ export const CardList = ({ cards }: CardListProps) => {
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState<Character | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { page } = useParams();
 
   if (cards.length === 0) {
-    return <div className={styles.empty}>No characters found</div>;
+    return <h2 className={styles.empty}>No characters found</h2>;
   }
 
   const handleCloseDetailedCard = () => {
     setSelectedCard(null);
+    navigate(`/search/${page}`);
   };
 
   const handleDetailedCard = async (
@@ -37,7 +39,7 @@ export const CardList = ({ cards }: CardListProps) => {
     setIsLoading(() => true);
     const cardData = await narutoAPI.getCharacterById(cardId);
     setSelectedCard(cardData);
-    navigate(`/search/${page}/${index + 1}`);
+    navigate(`/search/${page}/details=${index + 1}`);
     setIsLoading(() => false);
   };
 
