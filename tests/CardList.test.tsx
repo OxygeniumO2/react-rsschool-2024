@@ -2,9 +2,9 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { CardList } from '../src/components/CardList/CardList';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
-import { vi } from 'vitest';
 
 describe('CardList', () => {
   const cardsData = [

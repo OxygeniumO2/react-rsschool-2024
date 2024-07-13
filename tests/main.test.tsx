@@ -2,12 +2,12 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom'; // Import MemoryRouter
 import { vi } from 'vitest';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
 import { NotFoundPage } from '../src/pages/NotFoundPage/NotFoundPage';
 import { App } from '../src/App';
 import { DetailedCard } from '../src/components/CardList/DetailedCard/DetailedCard';
 import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React from 'react';
 
 describe('Main Component Tests', () => {
   it('renders main components correctly', () => {

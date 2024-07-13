@@ -53,8 +53,6 @@ export const App = () => {
       navigate(`/search/${page}`);
       setDetailedCard(null);
     }
-
-    localStorage.setItem(SEARCH_TEXT_OXY, searchText);
   };
 
   useEffect(() => {
@@ -83,7 +81,10 @@ export const App = () => {
       <SearchBar
         searchText={searchText}
         handleSearch={handleSearch}
-        handleButtonClick={() => handleCharactersData(1, false, searchText)}
+        handleButtonClick={() => {
+          handleCharactersData(1, false, searchText);
+          localStorage.setItem(SEARCH_TEXT_OXY, searchText);
+        }}
       />
       <CardListSection
         charactersData={charactersData}
