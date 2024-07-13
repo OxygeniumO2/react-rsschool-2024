@@ -6,6 +6,7 @@ import { useSearchTextLS } from './customHooks/useSearchTextLS';
 import { CardListSection } from './components/CardListSection/CardListSection';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DEFAULT_NUMBER_OF_ITEMS } from './constants/constants';
+import { SEARCH_TEXT_OXY } from './constants/localStorageKeys';
 
 export const App = () => {
   const [searchText, setSearchText] = useSearchTextLS();
@@ -30,6 +31,8 @@ export const App = () => {
     });
     setCharactersData(newCharactersData);
     navigate(`/search/${page}`);
+
+    localStorage.setItem(SEARCH_TEXT_OXY, searchText);
 
     setIsLoading(() => false);
   };
