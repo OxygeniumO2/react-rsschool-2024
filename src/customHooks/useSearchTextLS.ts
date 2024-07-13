@@ -10,6 +10,7 @@ export function useSearchTextLS(): [string, Dispatch<SetStateAction<string>>] {
 
   useEffect(() => {
     textRef.current = text;
+    localStorage.setItem(SEARCH_TEXT_OXY, text);
   }, [text]);
 
   useEffect(() => {
