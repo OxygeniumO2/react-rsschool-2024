@@ -14,7 +14,7 @@ export const DetailedCard = ({
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
   return (
-    <div className={styles.detailedCardContainer}>
+    <div className={styles.detailedCardContainer} data-testid="detailed-card">
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
       </div>

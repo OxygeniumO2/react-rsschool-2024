@@ -78,7 +78,7 @@ export const App = () => {
   }, []);
 
   return (
-    <>
+    <div data-testid="app">
       <img className="logo" src="/naruto-logo.png" alt="naruto" />
       <SearchBar
         searchText={searchText}
@@ -92,6 +92,6 @@ export const App = () => {
         detailedCard={detailedCard}
         handleDetailedCard={handleDetailedCard}
       />
-    </>
+    </div>
   );
 };

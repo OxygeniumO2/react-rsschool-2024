@@ -1,41 +1,42 @@
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { CardList } from '../src/components/CardList/CardList';
 import { MemoryRouter } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
+import { vi } from 'vitest';
 
 describe('CardList', () => {
-  it('should render the specified number of cards', () => {
-    const cardsData = [
-      {
-        id: '1',
-        name: 'test1',
-        images: ['test1', 'test2'],
-        debut: {
-          appearsIn: 'test',
-        },
-        personal: {
-          sex: 'test',
-          clan: 'test',
-          classification: 'test',
-        },
+  const cardsData = [
+    {
+      id: '1',
+      name: 'test1',
+      images: ['test1', 'test2'],
+      debut: {
+        appearsIn: 'test',
       },
-      {
-        id: '2',
-        name: 'test2',
-        images: ['test1', 'test2'],
-        debut: {
-          appearsIn: 'test',
-        },
-        personal: {
-          sex: 'test',
-          clan: 'test',
-          classification: 'test',
-        },
+      personal: {
+        sex: 'test',
+        clan: 'test',
+        classification: 'test',
       },
-    ];
+    },
+    {
+      id: '2',
+      name: 'test2',
+      images: ['test1', 'test2'],
+      debut: {
+        appearsIn: 'test',
+      },
+      personal: {
+        sex: 'test',
+        clan: 'test',
+        classification: 'test',
+      },
+    },
+  ];
 
+  it('should render the specified number of cards', () => {
     const { getByText } = render(
       <MemoryRouter>
         <CardList
@@ -62,5 +63,37 @@ describe('CardList', () => {
     const noCardsMessage = getByRole('heading');
     expect(noCardsMessage).toBeInTheDocument();
     expect(noCardsMessage).toHaveTextContent('No characters found');
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should render DetailedCard component when detailedCard is not null', () => {
+    render(
+      <MemoryRouter>
+        <CardList
+          cards={cardsData}
+          detailedCard={cardsData[0]}
+          handleDetailedCard={() => null}
+        />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByTestId('detailed-card')).toBeInTheDocument();
+  });
+
+  it('should not render DetailedCard component when detailedCard is null', () => {
+    render(
+      <MemoryRouter>
+        <CardList
+          cards={cardsData}
+          detailedCard={null}
+          handleDetailedCard={() => null}
+        />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByTestId('detailed-card')).not.toBeInTheDocument();
   });
 });
