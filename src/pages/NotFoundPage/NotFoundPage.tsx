@@ -5,7 +5,7 @@ export const NotFoundPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/not-found', { replace: true });
+    navigate('/not-found');
   }, []);
 
   return (

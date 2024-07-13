@@ -8,11 +8,16 @@ import { Loader } from '../Loader/Loader';
 
 type CardListProps = {
   cards: Character[];
+  detailedCard: Character | null;
+  handleDetailedCard: (card: Character | null) => void;
 };
 
-export const CardList = ({ cards }: CardListProps) => {
+export const CardList = ({
+  cards,
+  detailedCard,
+  handleDetailedCard,
+}: CardListProps) => {
   const navigate = useNavigate();
-  const [selectedCard, setSelectedCard] = useState<Character | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { page } = useParams();
 
@@ -21,24 +26,24 @@ export const CardList = ({ cards }: CardListProps) => {
   }
 
   const handleCloseDetailedCard = () => {
-    setSelectedCard(null);
+    handleDetailedCard(null);
     navigate(`/search/${page}`);
   };
 
-  const handleDetailedCard = async (
+  const handleNewDetailedCard = async (
     cardId: string,
     page: number,
     index: number
   ) => {
-    if (cardId === selectedCard?.id) {
-      setSelectedCard(null);
+    if (cardId === detailedCard?.id) {
+      handleDetailedCard(null);
       navigate(`/search/${page}`);
       return;
     }
 
     setIsLoading(() => true);
     const cardData = await narutoAPI.getCharacterById(cardId);
-    setSelectedCard(cardData);
+    handleDetailedCard(cardData);
     navigate(`/search/${page}/details=${index + 1}`);
     setIsLoading(() => false);
   };
@@ -51,16 +56,16 @@ export const CardList = ({ cards }: CardListProps) => {
             key={card.id}
             card={card}
             index={index}
-            handleDetailedCard={handleDetailedCard}
+            handleDetailedCard={handleNewDetailedCard}
           />
         ))}
       </div>
       {isLoading ? (
         <Loader />
       ) : (
-        selectedCard && (
+        detailedCard && (
           <DetailedCard
-            character={selectedCard}
+            character={detailedCard}
             handleCloseDetailedCard={handleCloseDetailedCard}
           />
         )

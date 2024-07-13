@@ -38,7 +38,11 @@ describe('CardList', () => {
 
     const { getByText } = render(
       <MemoryRouter>
-        <CardList cards={cardsData} />
+        <CardList
+          cards={cardsData}
+          detailedCard={null}
+          handleDetailedCard={() => null}
+        />
       </MemoryRouter>
     );
     expect(getByText('test1')).toBeInTheDocument();
@@ -48,7 +52,11 @@ describe('CardList', () => {
   it('should render text if there are no cards', () => {
     const { getByRole } = render(
       <MemoryRouter>
-        <CardList cards={[]} />
+        <CardList
+          cards={[]}
+          detailedCard={null}
+          handleDetailedCard={() => null}
+        />
       </MemoryRouter>
     );
     const noCardsMessage = getByRole('heading');

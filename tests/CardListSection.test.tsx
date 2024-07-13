@@ -46,6 +46,8 @@ describe('CardListSection', () => {
           charactersData={null}
           isLoading={true}
           handleCharactersData={vi.fn()}
+          detailedCard={null}
+          handleDetailedCard={() => null}
         />
       </MemoryRouter>
     );
@@ -60,6 +62,8 @@ describe('CardListSection', () => {
           charactersData={charactersData}
           isLoading={false}
           handleCharactersData={vi.fn()}
+          detailedCard={null}
+          handleDetailedCard={() => null}
         />
       </MemoryRouter>
     );
@@ -77,6 +81,8 @@ describe('CardListSection', () => {
           charactersData={charactersData}
           isLoading={false}
           handleCharactersData={handleCharactersData}
+          detailedCard={null}
+          handleDetailedCard={() => null}
         />
       </MemoryRouter>
     );

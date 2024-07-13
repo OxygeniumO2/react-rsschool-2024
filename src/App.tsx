@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { GetCharactersResp, narutoAPI } from './services/narutoApi';
+import { Character, GetCharactersResp, narutoAPI } from './services/narutoApi';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { useSearchTextLS } from './customHooks/useSearchTextLS';
 import { CardListSection } from './components/CardListSection/CardListSection';
@@ -13,6 +13,7 @@ export const App = () => {
   const [charactersData, setCharactersData] =
     useState<GetCharactersResp | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [detailedCard, setDetailedCard] = useState<Character | null>(null);
 
   const params = useParams();
 
@@ -22,19 +23,38 @@ export const App = () => {
     setSearchText(searchText);
   };
 
-  const handleCharactersData = async (page: number = 1) => {
+  const handleDetailedCard = (card: Character | null) => {
+    setDetailedCard(card);
+  };
+
+  const handleCharactersData = async (
+    page: number = 1,
+    reset: boolean = false,
+    name: string = ''
+  ) => {
     setIsLoading(() => true);
 
     const newCharactersData = await narutoAPI.getCharacters({
-      name: searchText,
+      name,
       page,
     });
     setCharactersData(newCharactersData);
-    navigate(`/search/${page}`);
 
-    localStorage.setItem(SEARCH_TEXT_OXY, searchText);
+    const cardIndexValue = params.cardIndex
+      ? parseInt(params.cardIndex.split('=')[1], 10)
+      : null;
 
     setIsLoading(() => false);
+
+    if (cardIndexValue && reset) {
+      setDetailedCard(newCharactersData.characters[cardIndexValue - 1]);
+      navigate(`/search/${page}/details=${cardIndexValue}`);
+    } else {
+      navigate(`/search/${page}`);
+      setDetailedCard(null);
+    }
+
+    localStorage.setItem(SEARCH_TEXT_OXY, searchText);
   };
 
   useEffect(() => {
@@ -54,7 +74,7 @@ export const App = () => {
       return;
     }
 
-    handleCharactersData(currentPage);
+    handleCharactersData(currentPage, true, searchText);
   }, []);
 
   return (
@@ -63,12 +83,14 @@ export const App = () => {
       <SearchBar
         searchText={searchText}
         handleSearch={handleSearch}
-        handleButtonClick={() => handleCharactersData()}
+        handleButtonClick={() => handleCharactersData(1, false, searchText)}
       />
       <CardListSection
         charactersData={charactersData}
         isLoading={isLoading}
         handleCharactersData={handleCharactersData}
+        detailedCard={detailedCard}
+        handleDetailedCard={handleDetailedCard}
       />
     </>
   );
