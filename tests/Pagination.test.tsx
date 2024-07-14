@@ -4,7 +4,10 @@ import { MemoryRouter } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import { vi } from 'vitest';
-import { Pagination } from '../src/components/Pagination/Pagination';
+import {
+  generatePageNumbers,
+  Pagination,
+} from '../src/components/Pagination/Pagination';
 
 describe('Pagination', () => {
   const charactersData = {
@@ -106,6 +109,39 @@ describe('Pagination', () => {
     const page2Button = screen.getByText('2');
     fireEvent.click(page2Button);
 
-    expect(onPageChange).toHaveBeenCalledWith(2);
+    expect(onPageChange).toHaveBeenCalledWith({ page: 2 });
+  });
+
+  it('should generate page numbers correctly when totalPages <= pagesToShow', () => {
+    const totalPages = 5;
+    const pagesToShow = 5;
+    const currentPage = 3;
+
+    const result = generatePageNumbers(totalPages, pagesToShow, currentPage);
+
+    expect(result).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it('should generate page numbers correctly when totalPages > pagesToShow and currentPage is in the middle', () => {
+    const totalPages = 10;
+    const pagesToShow = 5;
+    const currentPage = 5;
+
+    const result = generatePageNumbers(totalPages, pagesToShow, currentPage);
+
+    expect(result).toEqual([1, '...', 3, 4, 5, 6, 7, '...', 10]);
+  });
+
+  it('should handle edge cases correctly', () => {
+    const totalPages = 10;
+    const pagesToShow = 5;
+    let currentPage = 1;
+
+    let result = generatePageNumbers(totalPages, pagesToShow, currentPage);
+    expect(result).toEqual([1, 2, 3, 4, 5, '...', 10]);
+
+    currentPage = 10;
+    result = generatePageNumbers(totalPages, pagesToShow, currentPage);
+    expect(result).toEqual([1, '...', 8, 9, 10]);
   });
 });

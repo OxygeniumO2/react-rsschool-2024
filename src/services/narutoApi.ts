@@ -27,6 +27,12 @@ export interface Character {
   };
 }
 
+export interface HandleCharactersDataParams {
+  page?: number;
+  name?: string;
+  reset?: boolean;
+}
+
 export const narutoAPI = {
   async getCharacters({
     name = '',

@@ -1,4 +1,8 @@
-import { Character, GetCharactersResp } from '../../services/narutoApi';
+import {
+  Character,
+  GetCharactersResp,
+  HandleCharactersDataParams,
+} from '../../services/narutoApi';
 import { CardList } from '../CardList/CardList';
 import { Loader } from '../Loader/Loader';
 import { Pagination } from '../Pagination/Pagination';
@@ -6,7 +10,7 @@ import { Pagination } from '../Pagination/Pagination';
 type CardListSectionProps = {
   charactersData: GetCharactersResp | null;
   isLoading: boolean;
-  handleCharactersData: (page: number) => void;
+  handleCharactersData: (params: HandleCharactersDataParams) => void;
   detailedCard: Character | null;
   handleDetailedCard: (card: Character | null) => void;
 };

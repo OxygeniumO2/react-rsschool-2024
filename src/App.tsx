@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { Character, GetCharactersResp, narutoAPI } from './services/narutoApi';
+import {
+  Character,
+  GetCharactersResp,
+  HandleCharactersDataParams,
+  narutoAPI,
+} from './services/narutoApi';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { useSearchTextLS } from './customHooks/useSearchTextLS';
 import { CardListSection } from './components/CardListSection/CardListSection';
@@ -26,11 +31,11 @@ export const App = () => {
     setDetailedCard(card);
   };
 
-  const handleCharactersData = async (
-    page: number = 1,
-    reset: boolean = false,
-    name: string = ''
-  ) => {
+  const handleCharactersData = async ({
+    page = 1,
+    name = searchText,
+    reset = false,
+  }: HandleCharactersDataParams) => {
     setIsLoading(() => true);
 
     const newCharactersData = await narutoAPI.getCharacters({
@@ -47,9 +52,10 @@ export const App = () => {
 
     if (cardIndexValue && reset) {
       setDetailedCard(newCharactersData.characters[cardIndexValue - 1]);
-      navigate(`/search/${page}/details=${cardIndexValue}`);
+      navigate(`/search/name="${name}"/${page}/details=${cardIndexValue}`);
     } else {
-      navigate(`/search/${page}`);
+      navigate(`/search/name="${name}"/${page}`);
+      setSearchText(() => name);
       setDetailedCard(null);
     }
   };
@@ -59,6 +65,7 @@ export const App = () => {
     const cardIndexValue = params.cardIndex
       ? parseInt(params.cardIndex.split('=')[1], 10)
       : null;
+    const nameParam = params.name ? params.name.split('"')[1] : '';
 
     if (
       isNaN(currentPage) ||
@@ -71,7 +78,11 @@ export const App = () => {
       return;
     }
 
-    handleCharactersData(currentPage, true, searchText);
+    handleCharactersData({
+      page: currentPage,
+      name: nameParam,
+      reset: true,
+    });
   }, []);
 
   return (
@@ -81,7 +92,9 @@ export const App = () => {
         searchText={searchText}
         handleSearch={handleSearch}
         handleButtonClick={() => {
-          handleCharactersData(1, false, searchText);
+          handleCharactersData({
+            name: searchText,
+          });
         }}
       />
       <CardListSection

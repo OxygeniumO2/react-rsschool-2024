@@ -19,7 +19,7 @@ export const CardList = ({
 }: CardListProps) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { page } = useParams();
+  const { page, name } = useParams();
 
   if (cards.length === 0) {
     return <h2 className={styles.empty}>No characters found</h2>;
@@ -27,7 +27,7 @@ export const CardList = ({
 
   const handleCloseDetailedCard = () => {
     handleDetailedCard(null);
-    navigate(`/search/${page}`);
+    navigate(`/search/${name}/${page}`);
   };
 
   const handleNewDetailedCard = async (
@@ -37,14 +37,14 @@ export const CardList = ({
   ) => {
     if (cardId === detailedCard?.id) {
       handleDetailedCard(null);
-      navigate(`/search/${page}`);
+      navigate(`/search/${name}/${page}`);
       return;
     }
 
     setIsLoading(() => true);
     const cardData = await narutoAPI.getCharacterById(cardId);
     handleDetailedCard(cardData);
-    navigate(`/search/${page}/details=${index + 1}`);
+    navigate(`/search/${name}/${page}/details=${index + 1}`);
     setIsLoading(() => false);
   };
 

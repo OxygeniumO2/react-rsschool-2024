@@ -15,11 +15,11 @@ import { DetailedCard } from './components/CardList/DetailedCard/DetailedCard.ts
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/search/1" replace />,
+    element: <Navigate to="/search/:name/1" replace />,
     errorElement: <NotFoundPage />,
   },
   {
-    path: '/search/:page',
+    path: '/search/:name/:page',
     element: <App />,
     errorElement: <NotFoundPage />,
     children: [
