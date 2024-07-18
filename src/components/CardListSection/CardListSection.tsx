@@ -17,7 +17,7 @@ export const CardListSection = () => {
     isLoading,
     isFetching,
   } = apiSlice.useGetCharactersQuery({
-    page: page,
+    page: page as number,
     name: params?.name?.split('"')[1],
   });
 
@@ -33,6 +33,10 @@ export const CardListSection = () => {
 
   if (isLoading || isFetching) {
     return <Loader />;
+  }
+
+  if (!characters) {
+    return <div>No characters found</div>;
   }
 
   const handlePage = ({ page }: { page: number }) => {

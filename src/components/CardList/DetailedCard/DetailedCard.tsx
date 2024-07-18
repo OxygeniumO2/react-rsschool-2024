@@ -22,6 +22,10 @@ export const DetailedCard = ({
     return <Loader />;
   }
 
+  if (!character) {
+    return <div>No character found</div>;
+  }
+
   const { images, name, debut, personal } = character;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 

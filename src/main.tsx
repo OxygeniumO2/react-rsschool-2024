@@ -12,7 +12,7 @@ import {
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage.tsx';
 import { DetailedCard } from './components/CardList/DetailedCard/DetailedCard.tsx';
 import { Provider } from 'react-redux';
-import store from './store/store.ts';
+import { store } from './store/store.ts';
 
 const router = createBrowserRouter([
   {

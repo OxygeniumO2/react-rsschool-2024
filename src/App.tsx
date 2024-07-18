@@ -4,6 +4,7 @@ import { SearchBar } from './components/SearchBar/SearchBar';
 import { useSearchTextLS } from './customHooks/useSearchTextLS';
 import { CardListSection } from './components/CardListSection/CardListSection';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Flyout } from './components/flyout/Flyout';
 
 export const App = () => {
   const [searchText, setSearchText] = useSearchTextLS();
@@ -38,6 +39,7 @@ export const App = () => {
         }}
       />
       <CardListSection />
+      <Flyout />
     </div>
   );
 };

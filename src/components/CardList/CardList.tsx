@@ -21,12 +21,16 @@ export const CardList = ({ cards }: CardListProps) => {
   };
 
   const handleNewDetailedCard = (
-    cardId: string,
+    newCardId: string,
     index: number,
     event: React.MouseEvent
   ) => {
+    if (showDetailedCard && cardId === newCardId) {
+      setShowDetailedCard(false);
+      return;
+    }
     event.stopPropagation();
-    setCardId(cardId);
+    setCardId(newCardId);
     setShowDetailedCard(true);
     navigate(`/search/${name}/${page}/details=${index + 1}`);
   };

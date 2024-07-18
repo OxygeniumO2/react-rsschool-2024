@@ -1,5 +1,8 @@
 import styles from './card.module.css';
 import { Character } from '../../../services/narutoApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedCard } from '../../../store/selectedCardsSlice';
+import { RootState } from '../../../store/store';
 
 type CardProps = {
   card: Character;
@@ -14,6 +17,11 @@ type CardProps = {
 export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
+
+  const dispatch = useDispatch();
+  const selectedCards = useSelector(
+    (state: RootState) => state.selectedCards.selectedCards
+  );
 
   return (
     <div
@@ -51,6 +59,13 @@ export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
             </p>
           )}
         </div>
+        <input
+          className={styles.cardCheckbox}
+          type="checkbox"
+          onChange={() => dispatch(setSelectedCard(card))}
+          onClick={(e) => e.stopPropagation()}
+          checked={selectedCards.includes(card)}
+        ></input>
       </div>
     </div>
   );

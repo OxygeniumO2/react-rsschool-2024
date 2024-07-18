@@ -57,6 +57,12 @@
   font-size: 1.1rem;
 }
 
+.cardCheckbox {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+}
+
 @media screen and (max-width: 1259px) {
   .cardContainer {
     flex-direction: column;
