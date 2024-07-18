@@ -3,6 +3,9 @@ import { Character } from '../../../services/narutoApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedCard } from '../../../store/selectedCardsSlice';
 import { RootState } from '../../../store/store';
+import { useContext } from 'react';
+import { themeContext } from '../../../App';
+import { getThemeClass } from '../../../utils/getThemeClass';
 
 type CardProps = {
   card: Character;
@@ -15,6 +18,7 @@ type CardProps = {
 };
 
 export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
+  const theme = useContext(themeContext);
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
@@ -25,7 +29,7 @@ export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
 
   return (
     <div
-      className={styles.cardContainer}
+      className={`${styles.cardContainer} ${getThemeClass(theme, styles)}`}
       onClick={(event) => handleDetailedCard(card.id, index, event)}
     >
       <div className={styles.cardImgContainer}>

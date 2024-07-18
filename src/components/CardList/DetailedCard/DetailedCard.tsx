@@ -2,6 +2,9 @@ import styles from './detailedCard.module.css';
 import { apiSlice } from '../../../services/narutoApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { Loader } from '../../Loader/Loader';
+import { useContext } from 'react';
+import { themeContext } from '../../../App';
+import { getThemeClass } from '../../../utils/getThemeClass';
 
 type DetailedCardProps = {
   cardId: string | null;
@@ -12,6 +15,7 @@ export const DetailedCard = ({
   cardId,
   handleCloseDetailedCard,
 }: DetailedCardProps) => {
+  const theme = useContext(themeContext);
   const {
     data: character,
     isLoading,
@@ -30,7 +34,10 @@ export const DetailedCard = ({
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
   return (
-    <div className={styles.detailedCardContainer} data-testid="detailed-card">
+    <div
+      className={`${styles.detailedCardContainer} ${getThemeClass(theme, styles)}`}
+      data-testid="detailed-card"
+    >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
       </div>

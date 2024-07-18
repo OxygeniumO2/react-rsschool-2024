@@ -23,6 +23,11 @@
   }
 }
 
+.flyout.dark {
+  background-color: #604a58;
+  color: white;
+}
+
 .flyout.visible {
   transform: translateY(0); /* Показать элемент */
 }

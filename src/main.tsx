@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
@@ -39,12 +39,16 @@ const router = createBrowserRouter([
   },
 ]);
 
+const themeContext = createContext('light');
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ErrorBoundary fallback={<ErrorComponent />}>
-        <RouterProvider router={router} />
-      </ErrorBoundary>
+      <themeContext.Provider value="light">
+        <ErrorBoundary fallback={<ErrorComponent />}>
+          <RouterProvider router={router} />
+        </ErrorBoundary>
+      </themeContext.Provider>
     </Provider>
   </React.StrictMode>
 );

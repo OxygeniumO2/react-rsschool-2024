@@ -71,6 +71,24 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.app.dark button {
+  background-color: #d6d6d6;
+  color: black;
+}
+
+.app.dark button:disabled {
+  background-color: #8c1616;
+  color: #d6d6d6;
+
+  &:hover {
+    background-color: #8c1616;
+  }
+}
+
+.app.dark button:hover {
+  background-color: #917dc5;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -86,6 +104,11 @@ button:focus-visible {
 
     &:hover {
       background-color: blue;
+    }
+
+    &:disabled {
+      cursor: default;
+      background-color: #1c4c5b;
     }
   }
 }

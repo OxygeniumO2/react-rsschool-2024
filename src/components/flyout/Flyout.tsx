@@ -3,6 +3,9 @@ import { RootState } from '../../store/store';
 import styles from './flyout.module.css';
 import { clearCards } from '../../store/selectedCardsSlice';
 import { Character } from '../../services/narutoApi';
+import { useContext } from 'react';
+import { themeContext } from '../../App';
+import { getThemeClass } from '../../utils/getThemeClass';
 
 function convertToCSV(objArray: Character[]) {
   return objArray.reduce((acc, item) => {
@@ -27,6 +30,7 @@ function downloadCSV(csv: string, filename: string) {
 
 export const Flyout = () => {
   const dispatch = useDispatch();
+  const theme = useContext(themeContext);
   const selectedCards = useSelector(
     (state: RootState) => state.selectedCards.selectedCards
   );
@@ -40,7 +44,7 @@ export const Flyout = () => {
 
   return (
     <div
-      className={`${styles.flyout} ${selectedCards.length > 0 ? styles.visible : ''}`}
+      className={`${styles.flyout} ${selectedCards.length > 0 ? styles.visible : ''} ${getThemeClass(theme, styles)}`}
     >
       <h2>{selectedCards.length} items are selected</h2>
       <button onClick={() => dispatch(clearCards())}>Unselect all</button>

@@ -3,7 +3,9 @@ import { Character } from '../../services/narutoApi';
 import { Card } from './Card/Card';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DetailedCard } from './DetailedCard/DetailedCard';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { themeContext } from '../../App';
+import { getThemeClass } from '../../utils/getThemeClass';
 
 type CardListProps = {
   cards: Character[];
@@ -11,9 +13,10 @@ type CardListProps = {
 
 export const CardList = ({ cards }: CardListProps) => {
   const navigate = useNavigate();
-  const { page, name } = useParams();
+  const { page, name, cardIndex } = useParams();
   const [showDetailedCard, setShowDetailedCard] = useState(false);
   const [cardId, setCardId] = useState<string | null>(null);
+  const theme = useContext(themeContext);
   const handleCloseDetailedCard = () => {
     setShowDetailedCard(false);
     setCardId(null);
@@ -35,13 +38,24 @@ export const CardList = ({ cards }: CardListProps) => {
     navigate(`/search/${name}/${page}/details=${index + 1}`);
   };
 
+  useEffect(() => {
+    if (cardIndex) {
+      const cardIndx = parseInt(cardIndex.split('=')[1]);
+      setCardId(cards[cardIndx - 1].id);
+      setShowDetailedCard(true);
+    }
+  }, []);
+
   if (cards.length === 0) {
     return <h2 className={styles.empty}>No characters found</h2>;
   }
 
   return (
     <div className={styles.cardListSection}>
-      <div className={styles.cardList} onClick={handleCloseDetailedCard}>
+      <div
+        className={`${styles.cardList} ${getThemeClass(theme, styles)}`}
+        onClick={handleCloseDetailedCard}
+      >
         {cards.map((card, index) => (
           <Card
             key={card.id}
