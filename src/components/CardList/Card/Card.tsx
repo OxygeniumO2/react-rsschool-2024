@@ -1,25 +1,24 @@
 import styles from './card.module.css';
 import { Character } from '../../../services/narutoApi';
-import { useParams } from 'react-router-dom';
 
 type CardProps = {
   card: Character;
   index: number;
-  handleDetailedCard: (cardId: string, page: number, index: number) => void;
+  handleDetailedCard: (
+    cardId: string,
+    index: number,
+    event: React.MouseEvent
+  ) => void;
 };
 
 export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
-  const params = useParams<{ page: string }>();
-
-  const pageNumber = Number(params.page);
-
   return (
     <div
       className={styles.cardContainer}
-      onClick={() => handleDetailedCard(card.id, pageNumber, index)}
+      onClick={(event) => handleDetailedCard(card.id, index, event)}
     >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />

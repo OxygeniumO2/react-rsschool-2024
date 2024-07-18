@@ -1,23 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
-import {
-  Character,
-  GetCharactersResp,
-  HandleCharactersDataParams,
-  narutoAPI,
-} from './services/narutoApi';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { useSearchTextLS } from './customHooks/useSearchTextLS';
 import { CardListSection } from './components/CardListSection/CardListSection';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DEFAULT_NUMBER_OF_ITEMS } from './constants/constants';
 
 export const App = () => {
   const [searchText, setSearchText] = useSearchTextLS();
-  const [charactersData, setCharactersData] =
-    useState<GetCharactersResp | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [detailedCard, setDetailedCard] = useState<Character | null>(null);
 
   const params = useParams();
 
@@ -27,62 +16,14 @@ export const App = () => {
     setSearchText(searchText);
   };
 
-  const handleDetailedCard = (card: Character | null) => {
-    setDetailedCard(card);
-  };
-
-  const handleCharactersData = async ({
-    page = 1,
-    name = searchText,
-    reset = false,
-  }: HandleCharactersDataParams) => {
-    setIsLoading(() => true);
-
-    const newCharactersData = await narutoAPI.getCharacters({
-      name,
-      page,
-    });
-    setCharactersData(newCharactersData);
-
-    const cardIndexValue = params.cardIndex
-      ? parseInt(params.cardIndex.split('=')[1], 10)
-      : null;
-
-    setIsLoading(() => false);
-
-    if (cardIndexValue && reset) {
-      setDetailedCard(newCharactersData.characters[cardIndexValue - 1]);
-      navigate(`/search/name="${name}"/${page}/details=${cardIndexValue}`);
-    } else {
-      navigate(`/search/name="${name}"/${page}`);
-      setSearchText(() => name);
-      setDetailedCard(null);
-    }
-  };
-
   useEffect(() => {
-    const currentPage = Number(params.page);
-    const cardIndexValue = params.cardIndex
-      ? parseInt(params.cardIndex.split('=')[1], 10)
-      : null;
-    const nameParam = params.name ? params.name.split('"')[1] : '';
-
-    if (
-      isNaN(currentPage) ||
-      currentPage < 1 ||
-      (cardIndexValue !== null &&
-        (isNaN(cardIndexValue) || cardIndexValue > DEFAULT_NUMBER_OF_ITEMS))
-    ) {
-      navigate('/not-found');
-      setIsLoading(() => false);
-      return;
+    if (params.cardIndex) {
+      navigate(
+        `/search/name="${searchText}"/${params.page}/${params.cardIndex}`
+      );
+    } else {
+      navigate(`/search/name="${searchText}"/${params.page}`);
     }
-
-    handleCharactersData({
-      page: currentPage,
-      name: nameParam,
-      reset: true,
-    });
   }, []);
 
   return (
@@ -92,18 +33,11 @@ export const App = () => {
         searchText={searchText}
         handleSearch={handleSearch}
         handleButtonClick={() => {
-          handleCharactersData({
-            name: searchText,
-          });
+          handleSearch(searchText);
+          navigate(`/search/name="${searchText}"/1`);
         }}
       />
-      <CardListSection
-        charactersData={charactersData}
-        isLoading={isLoading}
-        handleCharactersData={handleCharactersData}
-        detailedCard={detailedCard}
-        handleDetailedCard={handleDetailedCard}
-      />
+      <CardListSection />
     </div>
   );
 };

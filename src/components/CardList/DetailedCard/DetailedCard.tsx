@@ -1,15 +1,27 @@
 import styles from './detailedCard.module.css';
-import { Character } from '../../../services/narutoApi';
+import { apiSlice } from '../../../services/narutoApi';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { Loader } from '../../Loader/Loader';
 
 type DetailedCardProps = {
-  character: Character | Record<string, never>;
+  cardId: string | null;
   handleCloseDetailedCard: () => void;
 };
 
 export const DetailedCard = ({
-  character,
+  cardId,
   handleCloseDetailedCard,
 }: DetailedCardProps) => {
+  const {
+    data: character,
+    isLoading,
+    isFetching,
+  } = apiSlice.useGetCharacterByIdQuery(cardId ?? skipToken);
+
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
+
   const { images, name, debut, personal } = character;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
