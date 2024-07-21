@@ -64,7 +64,17 @@
 .cardCheckbox {
   width: 30px;
   height: 30px;
-  margin: 0 auto;
+  cursor: pointer;
+}
+
+.cardLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 1.2rem;
+  width: fit-content;
 }
 
 @media screen and (max-width: 1259px) {

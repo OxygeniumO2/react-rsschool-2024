@@ -27,6 +27,8 @@ export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
+  const isActiveCard = selectedCards.includes(card);
+
   return (
     <div
       className={`${styles.cardContainer} ${getThemeClass(theme, styles)}`}
@@ -63,13 +65,18 @@ export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
             </p>
           )}
         </div>
-        <input
-          className={styles.cardCheckbox}
-          type="checkbox"
-          onChange={() => dispatch(setSelectedCard(card))}
+        <label
+          className={styles.cardLabel}
           onClick={(e) => e.stopPropagation()}
-          checked={selectedCards.includes(card)}
-        ></input>
+        >
+          {isActiveCard ? 'Unselect' : 'Select'}
+          <input
+            className={styles.cardCheckbox}
+            type="checkbox"
+            onChange={() => dispatch(setSelectedCard(card))}
+            checked={isActiveCard}
+          />
+        </label>
       </div>
     </div>
   );
