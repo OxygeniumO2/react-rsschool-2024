@@ -21,10 +21,8 @@ function downloadCSV(csv: string, filename: string) {
     const url = URL.createObjectURL(csvFile);
     link.setAttribute('href', url);
     link.setAttribute('download', filename);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    link.remove();
   }
 }
 
