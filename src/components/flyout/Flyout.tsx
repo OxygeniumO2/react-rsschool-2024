@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import { themeContext } from '../../App';
 import { getThemeClass } from '../../utils/getThemeClass';
 
-function convertToCSV(objArray: Character[]) {
+export function convertToCSV(objArray: Character[]) {
   return objArray.reduce((acc, item) => {
     return (acc += `Name: ${item.name}, ${item.personal?.sex || ''}, ${item.personal?.clan || ''}, ${item.personal?.classification || ''}, ${item.debut?.appearsIn || ''}\n`);
   }, '');
