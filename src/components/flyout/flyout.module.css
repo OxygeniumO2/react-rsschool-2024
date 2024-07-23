@@ -31,3 +31,24 @@
 .flyout.visible {
   transform: translateY(0); /* Показать элемент */
 }
+
+.flyout .disabledDownload {
+  cursor: default;
+  background-color: #1c4c5b;
+  pointer-events: none;
+
+  &:hover {
+    background-color: #1c4c5b;
+    border-color: #1c4c5b;
+  }
+}
+
+.flyout.dark .disabledDownload {
+  background-color: #8c1616;
+  color: #d6d6d6;
+  pointer-events: none;
+
+  &:hover {
+    background-color: #8c1616;
+  }
+}
