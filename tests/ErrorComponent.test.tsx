@@ -1,7 +1,4 @@
-import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
 import { ErrorComponent } from '../src/components/ErrorBoundary/ErrorComponent/ErrorComponent';
 import { MemoryRouter } from 'react-router-dom';
 
