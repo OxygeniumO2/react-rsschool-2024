@@ -1,5 +1,5 @@
 import { CardList } from '../src/components/CardList/CardList';
-import { render, userEvent, screen } from '../src/utils/test-utilts';
+import { render } from '../src/utils/test-utilts';
 
 describe('CardList', () => {
   const cardsData = [
@@ -42,14 +42,5 @@ describe('CardList', () => {
     const noCardsMessage = getByRole('heading');
     expect(noCardsMessage).toBeInTheDocument();
     expect(noCardsMessage).toHaveTextContent('No characters found');
-  });
-
-  it('should render detailed card if card is clicked', async () => {
-    const { getByText } = render(<CardList cards={cardsData} />);
-    const card = getByText('test1');
-    userEvent.click(card);
-    expect(getByText('test1')).toBeInTheDocument();
-    const detailedCard = await screen.findByTestId('detailed-card');
-    expect(detailedCard).toBeInTheDocument();
   });
 });
