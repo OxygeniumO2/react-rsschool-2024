@@ -16,6 +16,7 @@ export const CardListSection = () => {
     data: characters,
     isLoading,
     isFetching,
+    error,
   } = apiSlice.useGetCharactersQuery({
     page: page as number,
     name: params?.name?.split('"')[1],
@@ -35,8 +36,12 @@ export const CardListSection = () => {
     return <Loader />;
   }
 
-  if (!characters) {
-    return <div>No characters found</div>;
+  if (!characters || error) {
+    return (
+      <h2 style={{ textAlign: 'center', marginTop: '50px' }}>
+        Sorry, API currently unavailable, or you have no internet connection
+      </h2>
+    );
   }
 
   const handlePage = ({ page }: { page: number }) => {
