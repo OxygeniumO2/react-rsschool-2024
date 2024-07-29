@@ -1,26 +1,28 @@
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSearchTextLS } from '../../customHooks/useSearchTextLS';
 import styles from './searchBar.module.css';
+import { useEffect } from 'react';
 
-type SearchBarProps = {
-  searchText: string;
-  handleSearch: (searchText: string) => void;
-  handleButtonClick: () => void;
-};
+export const SearchBar = () => {
+  const [searchText, setSearchText] = useSearchTextLS();
 
-export const SearchBar = ({
-  searchText,
-  handleSearch,
-  handleButtonClick,
-}: SearchBarProps) => {
+  const navigate = useNavigate();
+  const params = useParams();
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value.trim();
-    handleSearch(searchText);
+    setSearchText(searchText);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleButtonClick();
+  useEffect(() => {
+    if (params.cardIndex) {
+      navigate(
+        `/search/name="${searchText}"/${params.page}/${params.cardIndex}`
+      );
+    } else {
+      navigate(`/search/name="${searchText}"/${params.page}`);
     }
-  };
+  }, []);
 
   return (
     <div className={styles.searchBar}>
@@ -32,9 +34,11 @@ export const SearchBar = ({
         placeholder="search"
         value={searchText}
         onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
       />
-      <button onClick={handleButtonClick} type="button">
+      <button
+        onClick={() => navigate(`/search/name="${searchText}"/1`)}
+        type="button"
+      >
         Search
       </button>
     </div>

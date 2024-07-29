@@ -1,20 +1,43 @@
 import styles from './detailedCard.module.css';
-import { Character } from '../../../services/narutoApi';
+import { apiSlice } from '../../../services/narutoApi';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { Loader } from '../../Loader/Loader';
+import { useContext } from 'react';
+import { themeContext } from '../../../App';
+import { getThemeClass } from '../../../utils/getThemeClass';
 
 type DetailedCardProps = {
-  character: Character | Record<string, never>;
+  cardId: string | null;
   handleCloseDetailedCard: () => void;
 };
 
 export const DetailedCard = ({
-  character,
+  cardId,
   handleCloseDetailedCard,
 }: DetailedCardProps) => {
+  const theme = useContext(themeContext);
+  const {
+    data: character,
+    isLoading,
+    isFetching,
+  } = apiSlice.useGetCharacterByIdQuery(cardId ?? skipToken);
+
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
+
+  if (!character) {
+    return <div>No character found</div>;
+  }
+
   const { images, name, debut, personal } = character;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
   return (
-    <div className={styles.detailedCardContainer} data-testid="detailed-card">
+    <div
+      className={`${styles.detailedCardContainer} ${getThemeClass(theme, styles)}`}
+      data-testid="detailed-card"
+    >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
       </div>

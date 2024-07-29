@@ -1,92 +1,41 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
 import { CardListSection } from '../src/components/CardListSection/CardListSection';
-import { MemoryRouter } from 'react-router-dom';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
-import { vi } from 'vitest';
+import { render, screen, waitFor } from '../src/utils/test-utilts';
+import { server } from './server';
 
 describe('CardListSection', () => {
-  const charactersData = {
-    characters: [
-      {
-        id: '1',
-        name: 'Character 1',
-        images: ['image1.jpg'],
-        debut: { appearsIn: 'Movie 1' },
-        personal: {
-          sex: 'Male',
-          clan: 'Clan 1',
-          classification: 'Classification 1',
-        },
-      },
-      {
-        id: '2',
-        name: 'Character 2',
-        images: ['image2.jpg'],
-        debut: { appearsIn: 'Movie 2' },
-        personal: {
-          sex: 'Female',
-          clan: 'Clan 2',
-          classification: 'Classification 2',
-        },
-      },
-    ],
-    total: 2,
-    limit: 6,
-    page: 1,
-    currentPage: 1,
-    pageSize: 6,
-  };
+  it('should render correctly', async () => {
+    render(<CardListSection />);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
 
-  it('should render Loader when isLoading is true', () => {
-    render(
-      <MemoryRouter>
-        <CardListSection
-          charactersData={null}
-          isLoading={true}
-          handleCharactersData={vi.fn()}
-          detailedCard={null}
-          handleDetailedCard={() => null}
-        />
-      </MemoryRouter>
+    server.use(
+      http.get('https://dattebayo-api.onrender.com/characters', () => {
+        return HttpResponse.json({
+          characters: [
+            {
+              id: '1',
+              name: 'test1',
+              images: ['test1', 'test2'],
+              debut: {
+                appearsIn: 'test',
+              },
+              personal: {
+                sex: 'test',
+                clan: 'test',
+                classification: 'test',
+              },
+            },
+          ],
+          currentPage: 1,
+          pageSize: 6,
+          total: 6,
+        });
+      })
     );
 
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
-  });
-
-  it('should render CardList when charactersData is provided', () => {
-    render(
-      <MemoryRouter>
-        <CardListSection
-          charactersData={charactersData}
-          isLoading={false}
-          handleCharactersData={vi.fn()}
-          detailedCard={null}
-          handleDetailedCard={() => null}
-        />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText('Character 1')).toBeInTheDocument();
-    expect(screen.getByText('Character 2')).toBeInTheDocument();
-  });
-
-  it('should render Pagination when charactersData is provided', () => {
-    const handleCharactersData = vi.fn();
-
-    render(
-      <MemoryRouter>
-        <CardListSection
-          charactersData={charactersData}
-          isLoading={false}
-          handleCharactersData={handleCharactersData}
-          detailedCard={null}
-          handleDetailedCard={() => null}
-        />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText('1')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('test1')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+    });
   });
 });

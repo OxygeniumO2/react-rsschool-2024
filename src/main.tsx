@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
@@ -11,6 +11,8 @@ import {
 } from 'react-router-dom';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage.tsx';
 import { DetailedCard } from './components/CardList/DetailedCard/DetailedCard.tsx';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
 const router = createBrowserRouter([
   {
@@ -26,7 +28,7 @@ const router = createBrowserRouter([
       {
         path: ':cardIndex',
         element: (
-          <DetailedCard character={{}} handleCloseDetailedCard={() => {}} />
+          <DetailedCard cardId={''} handleCloseDetailedCard={() => {}} />
         ),
       },
     ],
@@ -37,10 +39,16 @@ const router = createBrowserRouter([
   },
 ]);
 
+const themeContext = createContext('light');
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ErrorBoundary fallback={<ErrorComponent />}>
-      <RouterProvider router={router} />
-    </ErrorBoundary>
+    <Provider store={store}>
+      <themeContext.Provider value="light">
+        <ErrorBoundary fallback={<ErrorComponent />}>
+          <RouterProvider router={router} />
+        </ErrorBoundary>
+      </themeContext.Provider>
+    </Provider>
   </React.StrictMode>
 );

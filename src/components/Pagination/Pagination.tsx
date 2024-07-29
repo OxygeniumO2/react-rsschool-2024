@@ -1,13 +1,10 @@
 import styles from './pagination.module.css';
-import {
-  GetCharactersResp,
-  HandleCharactersDataParams,
-} from '../../services/narutoApi';
+import { GetCharactersResp } from '../../services/narutoApi';
 import { DEFAULT_NUMBER_OF_ITEMS } from '../../constants/constants';
 
 type PaginationProps = {
   charactersData: GetCharactersResp;
-  onPageChange: (params: HandleCharactersDataParams) => void;
+  onPageChange: ({ page }: { page: number }) => void;
 };
 
 export const generatePageNumbers = (
