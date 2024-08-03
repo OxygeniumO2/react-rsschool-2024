@@ -45,13 +45,13 @@
   gap: 10px;
   font-size: 1.1rem;
   flex-grow: 1;
+}
 
-  h3 {
-    border-bottom: 1px solid gray;
-    padding-bottom: 5px;
-    text-align: center;
-    width: 100%;
-  }
+.cardRightContainer .cardName {
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  text-align: center;
+  width: 100%;
 }
 
 .cardInfo {

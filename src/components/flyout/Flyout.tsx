@@ -27,7 +27,9 @@ export const Flyout = () => {
     <div
       className={`${styles.flyout} ${selectedCards.length > 0 ? styles.visible : ''} ${getThemeClass(theme, styles)}`}
     >
-      <h2>{selectedCards.length} items are selected</h2>
+      <h2 className={styles.flyoutTitle}>
+        {selectedCards.length} items are selected
+      </h2>
       <button onClick={() => dispatch(clearCards())}>Unselect all</button>
       <a
         className={`${selectedCards.length === 0 ? styles.disabledDownload : ''}`}

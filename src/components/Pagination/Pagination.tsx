@@ -90,7 +90,11 @@ export const Pagination = ({
       </button>
       {pages.map((page, index) => {
         if (page === '...') {
-          return <span key={index}>...</span>;
+          return (
+            <span className={styles.dots} key={index}>
+              ...
+            </span>
+          );
         }
         return (
           <button

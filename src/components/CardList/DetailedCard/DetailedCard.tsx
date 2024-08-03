@@ -1,37 +1,22 @@
 import styles from './detailedCard.module.css';
-import { apiSlice } from '../../../services/narutoApi';
-import { skipToken } from '@reduxjs/toolkit/query';
-import { Loader } from '../../Loader/Loader';
+import { Character } from '../../../services/narutoApi';
 import { useContext } from 'react';
 import { themeContext } from '../../../App';
 import { getThemeClass } from '../../../utils/getThemeClass';
 
 type DetailedCardProps = {
-  cardId: string | null;
+  detail: Character;
   handleCloseDetailedCard: () => void;
 };
 
 export const DetailedCard = ({
-  cardId,
+  detail,
   handleCloseDetailedCard,
 }: DetailedCardProps) => {
   const theme = useContext(themeContext);
-  const {
-    data: character,
-    isLoading,
-    isFetching,
-  } = apiSlice.useGetCharacterByIdQuery(cardId ?? skipToken);
 
-  if (isLoading || isFetching) {
-    return <Loader />;
-  }
-
-  if (!character) {
-    return <div>No character found</div>;
-  }
-
-  const { images, name, debut, personal } = character;
-  const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
+  const { images, name, debut, personal } = detail;
+  const imageUrl = images.length > 0 ? images[0] : '../public/no-image.png';
 
   return (
     <div
@@ -42,7 +27,7 @@ export const DetailedCard = ({
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
       </div>
       <div className={styles.cardRightContainer}>
-        <h3>{name}</h3>
+        <h3 className={styles.cardName}>{name}</h3>
         <div className={styles.cardInfo}>
           {personal?.sex && (
             <p>
@@ -72,7 +57,11 @@ export const DetailedCard = ({
               <b>Appears In:</b> {debut?.appearsIn}
             </p>
           )}
-          <button onClick={handleCloseDetailedCard} type="button">
+          <button
+            className={styles.cardInfoBtn}
+            onClick={handleCloseDetailedCard}
+            type="button"
+          >
             Close
           </button>
         </div>

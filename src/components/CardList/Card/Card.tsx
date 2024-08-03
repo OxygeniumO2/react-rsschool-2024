@@ -10,11 +10,7 @@ import { getThemeClass } from '../../../utils/getThemeClass';
 type CardProps = {
   card: Character;
   index: number;
-  handleDetailedCard: (
-    cardId: string,
-    index: number,
-    event: React.MouseEvent
-  ) => void;
+  handleDetailedCard: (index: number) => void;
 };
 
 export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
@@ -27,18 +23,20 @@ export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const isActiveCard = selectedCards.includes(card);
+  const isActiveCard = selectedCards.some(
+    (selectedCard) => selectedCard.id === card.id
+  );
 
   return (
     <div
       className={`${styles.cardContainer} ${getThemeClass(theme, styles)}`}
-      onClick={(event) => handleDetailedCard(card.id, index, event)}
+      onClick={() => handleDetailedCard(index)}
     >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
       </div>
       <div className={styles.cardRightContainer}>
-        <h3>{name}</h3>
+        <h3 className={styles.cardName}>{name}</h3>
         <div className={styles.cardInfo}>
           {personal?.sex && (
             <p>

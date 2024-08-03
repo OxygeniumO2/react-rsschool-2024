@@ -1,28 +1,15 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSearchTextLS } from '../../customHooks/useSearchTextLS';
 import styles from './searchBar.module.css';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export const SearchBar = () => {
-  const [searchText, setSearchText] = useSearchTextLS();
-
-  const navigate = useNavigate();
-  const params = useParams();
+  const [searchText, setSearchText] = useState('');
+  const router = useRouter();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value.trim();
     setSearchText(searchText);
   };
-
-  useEffect(() => {
-    if (params.cardIndex) {
-      navigate(
-        `/search/name="${searchText}"/${params.page}/${params.cardIndex}`
-      );
-    } else {
-      navigate(`/search/name="${searchText}"/${params.page}`);
-    }
-  }, []);
 
   return (
     <div className={styles.searchBar}>
@@ -36,7 +23,7 @@ export const SearchBar = () => {
         onChange={handleInputChange}
       />
       <button
-        onClick={() => navigate(`/search/name="${searchText}"/1`)}
+        onClick={() => router.push(`/search/name="${searchText}"/1`)}
         type="button"
       >
         Search

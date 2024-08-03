@@ -42,13 +42,13 @@
   font-size: 1.1rem;
   flex-grow: 1;
   width: 100%;
+}
 
-  h3 {
-    border-bottom: 1px solid gray;
-    padding-bottom: 5px;
-    text-align: center;
-    width: 100%;
-  }
+.cardName {
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  text-align: center;
+  width: 100%;
 }
 
 .cardInfo {
@@ -56,12 +56,12 @@
   flex-direction: column;
   gap: 15px;
   font-size: 1.1rem;
+}
 
-  button {
-    display: block;
-    margin: 0 auto;
-    width: fit-content;
-  }
+.cardInfo .cardInfoBtn {
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
 }
 
 @media screen and (max-width: 600px) {
