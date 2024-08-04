@@ -15,7 +15,7 @@ export const CardListSection = () => {
   }
 
   const handlePage = ({ page }: { page: number }) => {
-    router.push(`/search/${router.query.name}/${page}`);
+    router.push(`/search/${name}/${page}`);
   };
 
   const result = apiSlice.useGetCharactersQuery(

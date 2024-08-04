@@ -33,7 +33,7 @@ export const Flyout = () => {
       <button onClick={() => dispatch(clearCards())}>Unselect all</button>
       <a
         className={`${selectedCards.length === 0 ? styles.disabledDownload : ''}`}
-        href={convertToCSV(selectedCards)}
+        href={selectedCards.length === 0 ? '#' : convertToCSV(selectedCards)}
         download={`${selectedCards.length}_naruto_characters.csv`}
       >
         Download

@@ -16,7 +16,7 @@ export const CardList = ({ cards }: CardListProps) => {
   const { name, page, details } = router.query;
   const theme = useContext(themeContext);
   const handleCloseDetailedCard = () => {
-    router.push(`/search/${name}/${page}`);
+    router.push(`/search/${name}/${page}`, undefined, { scroll: false });
   };
 
   const handleNewDetailedCard = (index: string) => {
@@ -24,7 +24,9 @@ export const CardList = ({ cards }: CardListProps) => {
       router.push(`/search/${name}/${page}`);
       return;
     }
-    router.push(`/search/${name}/${page}?details=${index}`);
+    router.push(`/search/${name}/${page}?details=${index}`, undefined, {
+      scroll: false,
+    });
   };
 
   if (cards.length === 0) {
