@@ -4,21 +4,15 @@ import { useRouter } from 'next/router';
 import { Character, GetCharactersResp } from '../../services/narutoApi';
 
 type CardListSectionProps = {
-  characters: GetCharactersResp;
+  charactersResp: GetCharactersResp;
   detail: Character;
 };
 
 export const CardListSection = ({
-  characters,
+  charactersResp,
   detail,
 }: CardListSectionProps) => {
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if (characters) {
-  //     dispatch(setCharacters(characters.characters));
-  //   }
-  // }, [characters]);
 
   const handlePage = ({ page }: { page: number }) => {
     router.push(`/search/${router.query.name}/${page}`);
@@ -26,9 +20,9 @@ export const CardListSection = ({
 
   return (
     <>
-      <CardList cards={characters.characters} detail={detail} />
-      {characters && (
-        <Pagination charactersData={characters} onPageChange={handlePage} />
+      <CardList cards={charactersResp.characters} detail={detail} />
+      {charactersResp && (
+        <Pagination charactersData={charactersResp} onPageChange={handlePage} />
       )}
     </>
   );

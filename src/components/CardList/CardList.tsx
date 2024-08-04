@@ -14,13 +14,16 @@ type CardListProps = {
 
 export const CardList = ({ cards, detail }: CardListProps) => {
   const router = useRouter();
-  const { name, page } = router.query;
+  const { name, page, details } = router.query;
   const theme = useContext(themeContext);
   const handleCloseDetailedCard = () => {
     router.push(`/search/${name}/${page}`);
   };
 
   const handleNewDetailedCard = (index: number) => {
+    if (Number(details) === index + 1) {
+      return;
+    }
     router.push(`/search/${name}/${page}?details=${index + 1}`);
   };
 

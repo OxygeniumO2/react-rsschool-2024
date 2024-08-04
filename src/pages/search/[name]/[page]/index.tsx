@@ -4,12 +4,12 @@ import { DEFAULT_NUMBER_OF_ITEMS } from '../../../../constants/constants';
 import { GetServerSideProps } from 'next';
 
 type SearchPageProps = {
-  res: GetCharactersResp;
+  charactersResp: GetCharactersResp;
   detail: Character;
 };
 
-const SearchPage = ({ res, detail }: SearchPageProps) => {
-  return <App props={res} detail={detail} />;
+const SearchPage = ({ charactersResp, detail }: SearchPageProps) => {
+  return <App charactersResp={charactersResp} detail={detail} />;
 };
 
 export default SearchPage;
@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      res,
+      charactersResp: res,
       detail: detailData,
     },
   };

@@ -16,7 +16,7 @@ export const DetailedCard = ({
   const theme = useContext(themeContext);
 
   const { images, name, debut, personal } = detail;
-  const imageUrl = images.length > 0 ? images[0] : '../public/no-image.png';
+  const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
   return (
     <div

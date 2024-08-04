@@ -10,14 +10,12 @@ import { Character, GetCharactersResp } from './services/narutoApi';
 export const themeContext = createContext('light');
 
 type AppProps = {
-  props: GetCharactersResp;
+  charactersResp: GetCharactersResp;
   detail: Character;
 };
 
-const App = ({ props, detail }: AppProps) => {
+const App = ({ charactersResp, detail }: AppProps) => {
   const [theme, setTheme] = useState('light');
-
-  console.log(detail);
 
   return (
     <Provider store={store}>
@@ -36,13 +34,9 @@ const App = ({ props, detail }: AppProps) => {
             >
               {theme.toUpperCase()}
             </button>
-            <img
-              className="logo"
-              src="../public/naruto-logo.png"
-              alt="naruto"
-            />
+            <img className="logo" src="/naruto-logo.png" alt="naruto" />
             <SearchBar />
-            <CardListSection characters={props} detail={detail} />
+            <CardListSection charactersResp={charactersResp} detail={detail} />
             <Flyout />
           </div>
         </div>

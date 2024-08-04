@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 export const SearchBar = () => {
-  const [searchText, setSearchText] = useState('');
   const router = useRouter();
+  const [searchText, setSearchText] = useState(
+    `${router.query.name?.toString().split('=')[1].replace(/"/g, '')}` || ''
+  );
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value.trim();
