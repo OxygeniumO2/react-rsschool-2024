@@ -1,29 +1,40 @@
 import { CardList } from '../CardList/CardList';
 import { Pagination } from '../Pagination/Pagination';
 import { useRouter } from 'next/router';
-import { Character, GetCharactersResp } from '../../services/narutoApi';
+import { apiSlice } from '../../services/narutoApi';
+import { Loader } from '../Loader/Loader';
 
-type CardListSectionProps = {
-  charactersResp: GetCharactersResp;
-  detail: Character;
-};
-
-export const CardListSection = ({
-  charactersResp,
-  detail,
-}: CardListSectionProps) => {
+export const CardListSection = () => {
   const router = useRouter();
+  const { name, page } = router.query;
+
+  let charName = '';
+
+  if (name && typeof name === 'string') {
+    charName = name?.split('=')[1].replace(/"/g, '');
+  }
 
   const handlePage = ({ page }: { page: number }) => {
     router.push(`/search/${router.query.name}/${page}`);
   };
 
+  const result = apiSlice.useGetCharactersQuery(
+    { name: charName, page: Number(page) },
+    {
+      skip: router.isFallback,
+    }
+  );
+
+  const { isLoading, isFetching, data } = result;
+
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
+
   return (
     <>
-      <CardList cards={charactersResp.characters} detail={detail} />
-      {charactersResp && (
-        <Pagination charactersData={charactersResp} onPageChange={handlePage} />
-      )}
+      <CardList cards={data!.characters} />
+      {data && <Pagination charactersData={data} onPageChange={handlePage} />}
     </>
   );
 };

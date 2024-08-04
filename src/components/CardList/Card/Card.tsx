@@ -9,11 +9,10 @@ import { getThemeClass } from '../../../utils/getThemeClass';
 
 type CardProps = {
   card: Character;
-  index: number;
-  handleDetailedCard: (index: number) => void;
+  handleDetailedCard: (index: string) => void;
 };
 
-export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
+export const Card = ({ card, handleDetailedCard }: CardProps) => {
   const theme = useContext(themeContext);
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
@@ -24,13 +23,13 @@ export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
   );
 
   const isActiveCard = selectedCards.some(
-    (selectedCard) => selectedCard.id === card.id
+    (selectedCard: { id: string }) => selectedCard.id === card.id
   );
 
   return (
     <div
       className={`${styles.cardContainer} ${getThemeClass(theme, styles)}`}
-      onClick={() => handleDetailedCard(index)}
+      onClick={() => handleDetailedCard(card.id)}
     >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />

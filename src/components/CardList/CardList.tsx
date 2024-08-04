@@ -9,10 +9,9 @@ import { useRouter } from 'next/router';
 
 type CardListProps = {
   cards: Character[];
-  detail: Character;
 };
 
-export const CardList = ({ cards, detail }: CardListProps) => {
+export const CardList = ({ cards }: CardListProps) => {
   const router = useRouter();
   const { name, page, details } = router.query;
   const theme = useContext(themeContext);
@@ -20,11 +19,12 @@ export const CardList = ({ cards, detail }: CardListProps) => {
     router.push(`/search/${name}/${page}`);
   };
 
-  const handleNewDetailedCard = (index: number) => {
-    if (Number(details) === index + 1) {
+  const handleNewDetailedCard = (index: string) => {
+    if (details === index.toString()) {
+      router.push(`/search/${name}/${page}`);
       return;
     }
-    router.push(`/search/${name}/${page}?details=${index + 1}`);
+    router.push(`/search/${name}/${page}?details=${index}`);
   };
 
   if (cards.length === 0) {
@@ -37,20 +37,16 @@ export const CardList = ({ cards, detail }: CardListProps) => {
         className={`${styles.cardList} ${getThemeClass(theme, styles)}`}
         onClick={handleCloseDetailedCard}
       >
-        {cards.map((card, index) => (
+        {cards.map((card) => (
           <Card
             key={card.id}
             card={card}
-            index={index}
             handleDetailedCard={handleNewDetailedCard}
           />
         ))}
       </div>
-      {detail && (
-        <DetailedCard
-          detail={detail}
-          handleCloseDetailedCard={handleCloseDetailedCard}
-        />
+      {details && (
+        <DetailedCard handleCloseDetailedCard={handleCloseDetailedCard} />
       )}
     </div>
   );

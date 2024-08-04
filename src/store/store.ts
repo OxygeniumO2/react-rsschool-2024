@@ -1,17 +1,23 @@
-import { configureStore } from '@reduxjs/toolkit/react';
+import { configureStore, Store } from '@reduxjs/toolkit/react';
 import { apiSlice } from '../services/narutoApi';
 import charactersReducer from './charactersSlice';
 import selectedCardsReducer from './selectedCardsSlice';
+import { createWrapper } from 'next-redux-wrapper';
 
-export const store = configureStore({
-  reducer: {
-    characters: charactersReducer,
-    selectedCards: selectedCardsReducer,
-    [apiSlice.reducerPath]: apiSlice.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+export const makeStore = (): Store =>
+  configureStore({
+    reducer: {
+      characters: charactersReducer,
+      selectedCards: selectedCardsReducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(apiSlice.middleware),
+  });
+
+export type RootState = ReturnType<ReturnType<typeof makeStore>['getState']>;
+export type AppStore = ReturnType<typeof makeStore>;
+export type AppDispatch = ReturnType<typeof makeStore>['dispatch'];
+export const wrapper = createWrapper<ReturnType<typeof makeStore>>(makeStore, {
+  debug: true,
 });
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;

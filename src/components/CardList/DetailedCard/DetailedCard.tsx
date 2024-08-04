@@ -1,21 +1,33 @@
 import styles from './detailedCard.module.css';
-import { Character } from '../../../services/narutoApi';
+import { apiSlice, Character } from '../../../services/narutoApi';
 import { useContext } from 'react';
 import { themeContext } from '../../../App';
 import { getThemeClass } from '../../../utils/getThemeClass';
+import { useRouter } from 'next/router';
+import { Loader } from '../../Loader/Loader';
 
 type DetailedCardProps = {
-  detail: Character;
   handleCloseDetailedCard: () => void;
 };
 
 export const DetailedCard = ({
-  detail,
   handleCloseDetailedCard,
 }: DetailedCardProps) => {
   const theme = useContext(themeContext);
+  const router = useRouter();
+  const { details } = router.query;
 
-  const { images, name, debut, personal } = detail;
+  const result = apiSlice.useGetCharacterByIdQuery(details?.toString() || '1', {
+    skip: router.isFallback || !details,
+  });
+
+  const { isLoading, isFetching, data } = result;
+
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
+
+  const { images, name, debut, personal } = data as Character;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
   return (
