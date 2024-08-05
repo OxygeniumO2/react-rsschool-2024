@@ -1,4 +1,4 @@
-import { App } from '../src/App';
+import App from '../src/App';
 import { render, screen } from '../src/utils/test-utilts';
 
 beforeAll(() => {

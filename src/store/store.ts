@@ -1,13 +1,11 @@
 import { configureStore, Store } from '@reduxjs/toolkit/react';
 import { apiSlice } from '../services/narutoApi';
-import charactersReducer from './charactersSlice';
 import selectedCardsReducer from './selectedCardsSlice';
 import { createWrapper } from 'next-redux-wrapper';
 
 export const makeStore = (): Store =>
   configureStore({
     reducer: {
-      characters: charactersReducer,
       selectedCards: selectedCardsReducer,
       [apiSlice.reducerPath]: apiSlice.reducer,
     },

@@ -27,6 +27,10 @@ export const DetailedCard = ({
     return <Loader />;
   }
 
+  if (!data) {
+    return <h1 data-testid="detailed-card">Character not found</h1>;
+  }
+
   const { images, name, debut, personal } = data as Character;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 

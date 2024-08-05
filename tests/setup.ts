@@ -12,3 +12,5 @@ afterAll(() => {
 afterEach(() => {
   server.resetHandlers();
 });
+
+vi.mock('next/router', () => require('next-router-mock'));

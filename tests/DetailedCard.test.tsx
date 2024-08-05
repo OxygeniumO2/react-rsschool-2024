@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '../src/utils/test-utilts';
 
 describe('DetailedCard', () => {
   it('should render correctly', async () => {
-    render(<DetailedCard cardId={'1'} handleCloseDetailedCard={() => {}} />);
+    render(<DetailedCard handleCloseDetailedCard={() => {}} />);
     await waitFor(() => {
       expect(screen.getByTestId('detailed-card')).toBeInTheDocument();
     });
