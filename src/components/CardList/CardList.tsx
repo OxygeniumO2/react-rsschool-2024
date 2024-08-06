@@ -1,11 +1,11 @@
+'use client';
 import styles from './cardList.module.css';
 import { Character } from '../../services/narutoApi';
 import { Card } from './Card/Card';
-import { DetailedCard } from './DetailedCard/DetailedCard';
 import { useContext } from 'react';
 import { themeContext } from '../../App';
 import { getThemeClass } from '../../utils/getThemeClass';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 
 type CardListProps = {
   cards: Character[];
@@ -13,18 +13,26 @@ type CardListProps = {
 
 export const CardList = ({ cards }: CardListProps) => {
   const router = useRouter();
-  const { name, page, details } = router.query;
-  const theme = useContext(themeContext);
+  const pathName = usePathname();
+  const { theme } = useContext(themeContext);
+
+  const decodedPathName = decodeURIComponent(pathName);
+
+  const charName = decodedPathName
+    .split('=')[1]
+    .replace(/"/g, '')
+    .split('/')[0];
+
+  const page = decodedPathName.split('/')[3];
+
   const handleCloseDetailedCard = () => {
-    router.push(`/search/${name}/${page}`, undefined, { scroll: false });
+    router.push(`/search/name="${charName}"/${page}`, {
+      scroll: false,
+    });
   };
 
   const handleNewDetailedCard = (index: string) => {
-    if (details === index.toString()) {
-      router.push(`/search/${name}/${page}`);
-      return;
-    }
-    router.push(`/search/${name}/${page}?details=${index}`, undefined, {
+    router.push(`/search/name="${charName}"/${page}/details=${index}`, {
       scroll: false,
     });
   };
@@ -34,22 +42,20 @@ export const CardList = ({ cards }: CardListProps) => {
   }
 
   return (
-    <div className={styles.cardListSection}>
-      <div
-        className={`${styles.cardList} ${getThemeClass(theme, styles)}`}
-        onClick={handleCloseDetailedCard}
-      >
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            card={card}
-            handleDetailedCard={handleNewDetailedCard}
-          />
-        ))}
-      </div>
-      {details && (
-        <DetailedCard handleCloseDetailedCard={handleCloseDetailedCard} />
-      )}
+    <div
+      className={`${styles.cardList} ${getThemeClass(theme, styles)}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleCloseDetailedCard();
+      }}
+    >
+      {cards.map((card) => (
+        <Card
+          key={card.id}
+          card={card}
+          handleDetailedCard={handleNewDetailedCard}
+        />
+      ))}
     </div>
   );
 };

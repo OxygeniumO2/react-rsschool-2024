@@ -1,3 +1,4 @@
+'use client';
 import styles from './card.module.css';
 import { Character } from '../../../services/narutoApi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +14,7 @@ type CardProps = {
 };
 
 export const Card = ({ card, handleDetailedCard }: CardProps) => {
-  const theme = useContext(themeContext);
+  const { theme } = useContext(themeContext);
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
@@ -29,7 +30,10 @@ export const Card = ({ card, handleDetailedCard }: CardProps) => {
   return (
     <div
       className={`${styles.cardContainer} ${getThemeClass(theme, styles)}`}
-      onClick={() => handleDetailedCard(card.id)}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleDetailedCard(card.id);
+      }}
     >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />

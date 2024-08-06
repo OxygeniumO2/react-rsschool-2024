@@ -1,10 +1,11 @@
+'use client';
+import { usePathname, useRouter } from 'next/navigation';
 import styles from './pagination.module.css';
 import { GetCharactersResp } from '../../services/narutoApi';
 import { DEFAULT_NUMBER_OF_ITEMS } from '../../constants/constants';
 
 type PaginationProps = {
   charactersData: GetCharactersResp;
-  onPageChange: ({ page }: { page: number }) => void;
 };
 
 export const generatePageNumbers = (
@@ -44,23 +45,33 @@ export const generatePageNumbers = (
   return pages;
 };
 
-export const Pagination = ({
-  charactersData,
-  onPageChange,
-}: PaginationProps) => {
+export const Pagination = ({ charactersData }: PaginationProps) => {
   const { total, pageSize, currentPage } = charactersData;
+  const router = useRouter();
+  const pathName = usePathname();
+
+  const decodedPathName = decodeURIComponent(pathName);
+
+  const charName = decodedPathName
+    .split('=')[1]
+    .replace(/"/g, '')
+    .split('/')[0];
 
   const totalPages = Math.ceil(total / pageSize);
   const pagesToShow = 5;
 
   const pages = generatePageNumbers(totalPages, pagesToShow, currentPage);
 
+  const handlePage = ({ page }: { page: number }) => {
+    router.push(`/search/name="${charName}"/${page}`);
+  };
+
   if (totalPages <= 1) {
     return (
       <div className={styles.pagination}>
         <button
           className={styles.paginationBtn}
-          onClick={() => onPageChange({ page: currentPage - 1 })}
+          onClick={() => handlePage({ page: currentPage - 1 })}
           disabled={currentPage === 1}
         >
           Prev
@@ -70,7 +81,7 @@ export const Pagination = ({
         </button>
         <button
           className={styles.paginationBtn}
-          onClick={() => onPageChange({ page: currentPage + 1 })}
+          onClick={() => handlePage({ page: currentPage + 1 })}
           disabled={total < DEFAULT_NUMBER_OF_ITEMS}
         >
           Next
@@ -84,7 +95,7 @@ export const Pagination = ({
       <button
         className={styles.paginationBtn}
         disabled={currentPage === 1}
-        onClick={() => onPageChange({ page: currentPage - 1 })}
+        onClick={() => handlePage({ page: currentPage - 1 })}
       >
         Prev
       </button>
@@ -99,7 +110,7 @@ export const Pagination = ({
         return (
           <button
             key={index}
-            onClick={() => onPageChange({ page: page as number })}
+            onClick={() => handlePage({ page: page as number })}
             className={currentPage === page ? `${styles.currentPage}` : ''}
             disabled={currentPage === page}
           >
@@ -110,7 +121,7 @@ export const Pagination = ({
       <button
         className={styles.paginationBtn}
         disabled={currentPage === totalPages}
-        onClick={() => onPageChange({ page: currentPage + 1 })}
+        onClick={() => handlePage({ page: currentPage + 1 })}
       >
         Next
       </button>

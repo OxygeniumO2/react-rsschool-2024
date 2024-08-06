@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { server } from './server';
+vi.mock('next/navigation', () => require('next-navigation-mock'));
 
 beforeAll(() => {
   server.listen({ onUnhandledRequest: 'error' });
@@ -12,5 +13,3 @@ afterAll(() => {
 afterEach(() => {
   server.resetHandlers();
 });
-
-vi.mock('next/router', () => require('next-router-mock'));

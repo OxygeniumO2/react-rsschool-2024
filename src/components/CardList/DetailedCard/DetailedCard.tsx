@@ -1,37 +1,38 @@
+'use client';
 import styles from './detailedCard.module.css';
-import { apiSlice, Character } from '../../../services/narutoApi';
+import { Character } from '../../../services/narutoApi';
 import { useContext } from 'react';
 import { themeContext } from '../../../App';
 import { getThemeClass } from '../../../utils/getThemeClass';
-import { useRouter } from 'next/router';
-import { Loader } from '../../Loader/Loader';
+import { usePathname, useRouter } from 'next/navigation';
 
 type DetailedCardProps = {
-  handleCloseDetailedCard: () => void;
+  data: Character | null;
 };
 
-export const DetailedCard = ({
-  handleCloseDetailedCard,
-}: DetailedCardProps) => {
-  const theme = useContext(themeContext);
+export const DetailedCard = ({ data }: DetailedCardProps) => {
   const router = useRouter();
-  const { details } = router.query;
-
-  const result = apiSlice.useGetCharacterByIdQuery(details?.toString() || '1', {
-    skip: router.isFallback || !details,
-  });
-
-  const { isLoading, isFetching, data } = result;
-
-  if (isLoading || isFetching) {
-    return <Loader />;
-  }
+  const pathName = usePathname();
+  const { theme } = useContext(themeContext);
 
   if (!data) {
     return <h1 data-testid="detailed-card">Character not found</h1>;
   }
 
-  const { images, name, debut, personal } = data as Character;
+  const decodedPathName = decodeURIComponent(pathName);
+
+  const charName = decodedPathName
+    .split('=')[1]
+    .replace(/"/g, '')
+    .split('/')[0];
+
+  const page = decodedPathName.split('/')[3];
+
+  const handleCloseDetailedCard = () => {
+    router.push(`/search/name="${charName}"/${page}`), { scroll: false };
+  };
+
+  const { images, name, debut, personal } = data;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
   return (

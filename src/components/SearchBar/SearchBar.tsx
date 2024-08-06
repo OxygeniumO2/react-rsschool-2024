@@ -1,11 +1,15 @@
+'use client';
 import styles from './searchBar.module.css';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 
 export const SearchBar = () => {
   const router = useRouter();
+  const pathName = usePathname();
+
+  const decodedPathName = decodeURIComponent(pathName);
   const [searchText, setSearchText] = useState(
-    `${router.query.name?.toString().split('=')[1].replace(/"/g, '')}` || ''
+    decodedPathName.split('=')[1].replace(/"/g, '').split('/')[0] || ''
   );
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

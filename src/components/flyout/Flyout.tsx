@@ -1,3 +1,4 @@
+'use client';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import styles from './flyout.module.css';
@@ -18,7 +19,7 @@ export function convertToCSV(objArray: Character[]) {
 
 export const Flyout = () => {
   const dispatch = useDispatch();
-  const theme = useContext(themeContext);
+  const { theme } = useContext(themeContext);
   const selectedCards = useSelector(
     (state: RootState) => state.selectedCards.selectedCards
   );

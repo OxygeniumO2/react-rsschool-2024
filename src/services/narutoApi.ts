@@ -1,9 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { DEFAULT_NUMBER_OF_ITEMS } from '../constants/constants';
 import baseUrl from './baseUrl';
-import { HYDRATE } from 'next-redux-wrapper';
-import { RootState } from '../store/store';
-import { Action, PayloadAction } from '@reduxjs/toolkit/react';
 
 export interface GetCharacters {
   name?: string;
@@ -37,17 +34,8 @@ export interface HandleCharactersDataParams {
   reset?: boolean;
 }
 
-function isHydrateAction(action: Action): action is PayloadAction<RootState> {
-  return action.type === HYDRATE;
-}
-
 export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
-  extractRehydrationInfo(action, { reducerPath }) {
-    if (isHydrateAction(action)) {
-      return action.payload[reducerPath];
-    }
-  },
   endpoints: (builder) => ({
     getCharacters: builder.query<GetCharactersResp, GetCharacters>({
       query: ({ name = '', page = 1, limit = DEFAULT_NUMBER_OF_ITEMS }) =>
@@ -58,3 +46,23 @@ export const apiSlice = createApi({
     }),
   }),
 });
+
+export const narutoAPI = {
+  async getCharacters({
+    name = '',
+    page = 1,
+    limit = DEFAULT_NUMBER_OF_ITEMS,
+  }: GetCharacters = {}): Promise<GetCharactersResp> {
+    const data = await fetch(
+      `${baseUrl}/characters?limit=${limit}&name=${name}&page=${page}`
+    );
+
+    return await data.json();
+  },
+
+  async getCharacterById(id: string): Promise<Character> {
+    const data = await fetch(`${baseUrl}/characters/${id}`);
+
+    return await data.json();
+  },
+};

@@ -4,7 +4,7 @@ import {
   RenderOptions,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { makeStore } from '../store/store';
+import { store } from '../store/store';
 
 afterEach(() => {
   cleanup();
@@ -16,9 +16,7 @@ function customRender(
 ): ReturnType<typeof renderTL> {
   return renderTL(ui, {
     // wrap provider(s) here if needed
-    wrapper: ({ children }) => (
-      <Provider store={makeStore()}>{children} </Provider>
-    ),
+    wrapper: ({ children }) => <Provider store={store}>{children} </Provider>,
     ...options,
   });
 }
