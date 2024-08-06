@@ -32,6 +32,11 @@ export const CardList = ({ cards }: CardListProps) => {
   };
 
   const handleNewDetailedCard = (index: string) => {
+    if (pathName.includes(`details=${index}`)) {
+      router.push(`/search/name="${charName}"/${page}`), { scroll: false };
+      return;
+    }
+
     router.push(`/search/name="${charName}"/${page}/details=${index}`, {
       scroll: false,
     });
