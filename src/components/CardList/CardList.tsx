@@ -10,7 +10,7 @@ import { Pagination } from '../Pagination/Pagination';
 
 export const CardList = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const theme = useContext(themeContext);
+  const { theme } = useContext(themeContext);
   const [loading, setLoading] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const { name, page, details } = router.query;

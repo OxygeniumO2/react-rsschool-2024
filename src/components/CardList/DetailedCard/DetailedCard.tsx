@@ -6,7 +6,7 @@ import { getThemeClass } from '../../../utils/getThemeClass';
 import { useRouter } from 'next/router';
 
 export const DetailedCard = () => {
-  const theme = useContext(themeContext);
+  const { theme } = useContext(themeContext);
   const router = useRouter();
   const { name, page, details } = router.query;
 

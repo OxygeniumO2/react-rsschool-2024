@@ -13,7 +13,7 @@ type CardProps = {
 };
 
 export const Card = ({ card, handleDetailedCard }: CardProps) => {
-  const theme = useContext(themeContext);
+  const { theme } = useContext(themeContext);
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
