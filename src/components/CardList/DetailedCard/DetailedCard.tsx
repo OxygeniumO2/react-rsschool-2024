@@ -4,34 +4,38 @@ import { useContext } from 'react';
 import { themeContext } from '../../../App';
 import { getThemeClass } from '../../../utils/getThemeClass';
 import { useRouter } from 'next/router';
-import { Loader } from '../../Loader/Loader';
 
-type DetailedCardProps = {
-  handleCloseDetailedCard: () => void;
-};
-
-export const DetailedCard = ({
-  handleCloseDetailedCard,
-}: DetailedCardProps) => {
+export const DetailedCard = () => {
   const theme = useContext(themeContext);
   const router = useRouter();
-  const { details } = router.query;
+  const { name, page, details } = router.query;
 
-  const result = apiSlice.useGetCharacterByIdQuery(details?.toString() || '1', {
-    skip: router.isFallback || !details,
-  });
+  const result = apiSlice.useGetCharacterByIdQuery(
+    details?.toString().split('=')[1] || '1',
+    {
+      skip: router.isFallback || !details,
+    }
+  );
 
-  const { isLoading, isFetching, data } = result;
+  let charName = '';
 
-  if (isLoading || isFetching) {
-    return <Loader />;
+  if (name && typeof name === 'string') {
+    charName = name?.split('=')[1].replace(/"/g, '');
   }
+
+  const { data } = result;
 
   if (!data) {
     return <h1 data-testid="detailed-card">Character not found</h1>;
   }
 
-  const { images, name, debut, personal } = data as Character;
+  const handleCloseDetailedCard = () => {
+    router.push(`/search/name=${charName}/${page}`, undefined, {
+      scroll: false,
+    });
+  };
+
+  const { images, name: cardName, debut, personal } = data as Character;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
   return (
@@ -43,7 +47,7 @@ export const DetailedCard = ({
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
       </div>
       <div className={styles.cardRightContainer}>
-        <h3 className={styles.cardName}>{name}</h3>
+        <h3 className={styles.cardName}>{cardName}</h3>
         <div className={styles.cardInfo}>
           {personal?.sex && (
             <p>

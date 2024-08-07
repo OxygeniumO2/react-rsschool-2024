@@ -1,16 +1,21 @@
-import App from '../../../../App';
+import { CardList } from '../../../../components/CardList/CardList';
+import Layout from '../../../../components/Layout/Layout';
 import { apiSlice } from '../../../../services/narutoApi';
 import { RootState, wrapper } from '../../../../store/store';
 
 const SearchPage = () => {
-  return <App />;
+  return (
+    <Layout>
+      <CardList>{null}</CardList>
+    </Layout>
+  );
 };
 
 export default SearchPage;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store: RootState) => async (context) => {
-    const { name, page, details } = context.query;
+    const { name, page } = context.query;
 
     let charName = '';
 
@@ -24,12 +29,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         page: Number(page),
       })
     );
-
-    if (details) {
-      await store.dispatch(
-        apiSlice.endpoints.getCharacterById.initiate(details.toString())
-      );
-    }
 
     await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
 

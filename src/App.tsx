@@ -1,6 +1,5 @@
 import { createContext, useState } from 'react';
 import { SearchBar } from './components/SearchBar/SearchBar';
-import { CardListSection } from './components/CardListSection/CardListSection';
 import { Flyout } from './components/flyout/Flyout';
 
 export const themeContext = createContext('light');
@@ -22,7 +21,7 @@ const App = () => {
           </button>
           <img className="logo" src="/naruto-logo.png" alt="naruto" />
           <SearchBar />
-          <CardListSection />
+
           <Flyout />
         </div>
       </div>

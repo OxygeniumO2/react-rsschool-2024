@@ -29,7 +29,10 @@ export const Card = ({ card, handleDetailedCard }: CardProps) => {
   return (
     <div
       className={`${styles.cardContainer} ${getThemeClass(theme, styles)}`}
-      onClick={() => handleDetailedCard(card.id)}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleDetailedCard(card.id);
+      }}
     >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
