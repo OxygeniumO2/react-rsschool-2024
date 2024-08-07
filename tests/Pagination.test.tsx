@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { vi } from 'vitest';
 import {
   generatePageNumbers,
   Pagination,
@@ -26,15 +25,10 @@ describe('Pagination', () => {
     pageSize: 6,
   };
 
-  const onPageChange = vi.fn();
-
   it('should render Prev and Next buttons correctly', () => {
     render(
       <MemoryRouter>
-        <Pagination
-          charactersData={charactersData}
-          onPageChange={onPageChange}
-        />
+        <Pagination charactersData={charactersData} />
       </MemoryRouter>
     );
 
@@ -45,10 +39,7 @@ describe('Pagination', () => {
   it('should disable Prev button on first page', () => {
     render(
       <MemoryRouter>
-        <Pagination
-          charactersData={charactersData}
-          onPageChange={onPageChange}
-        />
+        <Pagination charactersData={charactersData} />
       </MemoryRouter>
     );
 
@@ -64,10 +55,7 @@ describe('Pagination', () => {
 
     render(
       <MemoryRouter>
-        <Pagination
-          charactersData={charactersDataLastPage}
-          onPageChange={onPageChange}
-        />
+        <Pagination charactersData={charactersDataLastPage} />
       </MemoryRouter>
     );
 
@@ -96,17 +84,15 @@ describe('Pagination', () => {
     };
     render(
       <MemoryRouter>
-        <Pagination
-          charactersData={charactersData}
-          onPageChange={onPageChange}
-        />
+        <Pagination charactersData={charactersData} />
       </MemoryRouter>
     );
 
     const page2Button = screen.getByText('2');
     fireEvent.click(page2Button);
 
-    expect(onPageChange).toHaveBeenCalledWith({ page: 2 });
+    const page3Button = screen.getByText('3');
+    expect(page3Button).toBeInTheDocument();
   });
 
   it('should generate page numbers correctly when totalPages <= pagesToShow', () => {

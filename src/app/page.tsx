@@ -7,6 +7,7 @@ const DefaultPage = () => {
   useEffect(() => {
     router.push('/search/name=""/1');
   });
+  return null;
 };
 
 export default DefaultPage;

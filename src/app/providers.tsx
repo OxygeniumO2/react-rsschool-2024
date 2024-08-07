@@ -1,9 +1,9 @@
 'use client';
 
 import { Provider } from 'react-redux';
-import { store } from '../store/store';
+import { AppStore, makeStore } from '../store/store';
 import { themeContext } from '../App';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState('light');
@@ -19,10 +19,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+export const StoreProvider = ({ children }: { children: ReactNode }) => {
+  const storeRef = useRef<AppStore>();
+  if (!storeRef.current) {
+    storeRef.current = makeStore();
+  }
+  return <Provider store={storeRef.current}>{children}</Provider>;
+};
+
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <Provider store={store}>
+    <StoreProvider>
       <ThemeProvider>{children}</ThemeProvider>
-    </Provider>
+    </StoreProvider>
   );
 }
