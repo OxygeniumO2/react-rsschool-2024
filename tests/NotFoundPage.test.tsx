@@ -7,9 +7,5 @@ describe('NotFoundPage', () => {
 
     expect(screen.getByText('404 Page Not Found')).toBeInTheDocument();
     expect(screen.getByText('To main')).toBeInTheDocument();
-    // expect(screen.getByRole('link', { name: 'To main' })).toHaveAttribute(
-    //   'href',
-    //   '/'
-    // );
   });
 });
