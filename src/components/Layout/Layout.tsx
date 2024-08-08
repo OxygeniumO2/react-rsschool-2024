@@ -2,6 +2,8 @@ import { ReactNode, useContext, useState } from 'react';
 import { themeContext } from '../../App';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { Flyout } from '../flyout/Flyout';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { ErrorComponent } from '../ErrorBoundary/ErrorComponent/ErrorComponent';
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState('light');
@@ -21,22 +23,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { theme, changeTheme } = useContext(themeContext);
   return (
     <>
-      <div data-testid="app" className={`app ${theme}`}>
-        <div className="container">
-          <button
-            className="themeBtn"
-            onClick={() => {
-              changeTheme();
-            }}
-          >
-            {theme.toUpperCase()}
-          </button>
-          <img className="logo" src="/naruto-logo.png" alt="naruto" />
-          <SearchBar />
-          {children}
-          <Flyout />
+      <ErrorBoundary fallback={<ErrorComponent />}>
+        <div data-testid="app" className={`app ${theme}`}>
+          <div className="container">
+            <button
+              className="themeBtn"
+              onClick={() => {
+                changeTheme();
+              }}
+            >
+              {theme.toUpperCase()}
+            </button>
+            <img className="logo" src="/naruto-logo.png" alt="naruto" />
+            <SearchBar />
+            {children}
+            <Flyout />
+          </div>
         </div>
-      </div>
+      </ErrorBoundary>
     </>
   );
 }
