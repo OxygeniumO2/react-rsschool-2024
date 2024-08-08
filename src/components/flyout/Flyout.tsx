@@ -18,7 +18,7 @@ export function convertToCSV(objArray: Character[]) {
 
 export const Flyout = () => {
   const dispatch = useDispatch();
-  const theme = useContext(themeContext);
+  const { theme } = useContext(themeContext);
   const selectedCards = useSelector(
     (state: RootState) => state.selectedCards.selectedCards
   );

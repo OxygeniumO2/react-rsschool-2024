@@ -41,7 +41,7 @@ export const CardList = ({ children }: { children: React.ReactNode }) => {
     };
     const handleComplete = (url: string) => {
       url === router.asPath && setLoading(() => false);
-      url === router.asPath && setLoadingDetails(() => false);
+      setLoadingDetails(() => false);
     };
 
     router.events.on('routeChangeStart', handleStart);

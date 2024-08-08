@@ -6,6 +6,7 @@ const IndexPage = () => {
   useEffect(() => {
     router.replace(`/search/name=""/1`);
   });
+  return null;
 };
 
 export default IndexPage;

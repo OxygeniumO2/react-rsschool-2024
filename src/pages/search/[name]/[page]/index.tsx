@@ -33,7 +33,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
 
     return {
-      props: {},
+      props: {
+        test: 'test',
+      },
     };
   }
 );

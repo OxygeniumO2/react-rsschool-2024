@@ -44,4 +44,11 @@ describe('DetailedCard', () => {
       expect(screen.getByTestId('detailed-card')).toBeInTheDocument();
     });
   });
+
+  it('should render not found', async () => {
+    render(<DetailedCard />);
+    await waitFor(() => {
+      expect(screen.getByText('Character not found')).toBeInTheDocument();
+    });
+  });
 });
