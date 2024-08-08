@@ -1,5 +1,4 @@
 import { Card } from '../src/components/CardList/Card/Card';
-import { CardList } from '../src/components/CardList/CardList';
 import { render } from '../src/utils/test-utilts';
 
 describe('CardList', () => {
@@ -22,13 +21,5 @@ describe('CardList', () => {
       <Card card={cardData} handleDetailedCard={() => {}} key={cardData.id} />
     );
     expect(getByText('test1')).toBeInTheDocument();
-    // expect(getByText('test2')).toBeInTheDocument();
   });
-
-  // it('should render text if there are no cards', () => {
-  //   const { getByRole } = render(<Card card={[]} />);
-  //   const noCardsMessage = getByRole('heading');
-  //   expect(noCardsMessage).toBeInTheDocument();
-  //   expect(noCardsMessage).toHaveTextContent('No characters found');
-  // });
 });

@@ -29,8 +29,6 @@ export const CardList = ({ children }: { children: React.ReactNode }) => {
     }
   );
 
-  console.log(result);
-
   useEffect(() => {
     const handleStart = (url: string) => {
       const currPageUrl = url.split('/')[3];
