@@ -1,30 +1,19 @@
 import styles from './detailedCard.module.css';
-import { apiSlice } from '../../../services/narutoApi';
-import { skipToken } from '@reduxjs/toolkit/query';
-import { Loader } from '../../Loader/Loader';
+import { Character } from '../../../services/narutoApi';
 import { useContext } from 'react';
 import { themeContext } from '../../../App';
 import { getThemeClass } from '../../../utils/getThemeClass';
 
 type DetailedCardProps = {
-  cardId: string | null;
+  character: Character | null;
   handleCloseDetailedCard: () => void;
 };
 
 export const DetailedCard = ({
-  cardId,
+  character,
   handleCloseDetailedCard,
 }: DetailedCardProps) => {
-  const theme = useContext(themeContext);
-  const {
-    data: character,
-    isLoading,
-    isFetching,
-  } = apiSlice.useGetCharacterByIdQuery(cardId ?? skipToken);
-
-  if (isLoading || isFetching) {
-    return <Loader />;
-  }
+  const { theme } = useContext(themeContext);
 
   if (!character) {
     return <div>No character found</div>;

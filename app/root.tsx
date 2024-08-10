@@ -1,4 +1,16 @@
-import { Links, Meta, Outlet, Scripts } from '@remix-run/react';
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react';
+import { ThemeProvider } from '../src/providers/ThemeProvider';
+import { Provider } from 'react-redux';
+import { store } from '../src/store/store';
+import { AppModify } from '../src/App';
+import '../src/App.css';
+import '../src/index.css';
 
 export default function App() {
   return (
@@ -9,10 +21,15 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <h1>Hello world!</h1>
-        <Outlet />
-
-        <Scripts />
+        <Provider store={store}>
+          <ThemeProvider>
+            <AppModify>
+              <Outlet />
+            </AppModify>
+            <ScrollRestoration />
+            <Scripts />
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );

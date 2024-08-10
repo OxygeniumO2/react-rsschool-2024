@@ -46,3 +46,23 @@ export const apiSlice = createApi({
     }),
   }),
 });
+
+export const narutoAPI = {
+  async getCharacters({
+    name = '',
+    page = 1,
+    limit = DEFAULT_NUMBER_OF_ITEMS,
+  }: GetCharacters = {}): Promise<GetCharactersResp> {
+    const data = await fetch(
+      `${baseUrl}/characters?limit=${limit}&name=${name}&page=${page}`
+    );
+
+    return await data.json();
+  },
+
+  async getCharacterById(id: string): Promise<Character> {
+    const data = await fetch(`${baseUrl}/characters/${id}`);
+
+    return await data.json();
+  },
+};

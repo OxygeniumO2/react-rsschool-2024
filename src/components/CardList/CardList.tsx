@@ -1,11 +1,10 @@
 import styles from './cardList.module.css';
 import { Character } from '../../services/narutoApi';
 import { Card } from './Card/Card';
-import { useNavigate, useParams } from 'react-router-dom';
-import { DetailedCard } from './DetailedCard/DetailedCard';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { themeContext } from '../../App';
 import { getThemeClass } from '../../utils/getThemeClass';
+import { useNavigate, useParams } from '@remix-run/react';
 
 type CardListProps = {
   cards: Character[];
@@ -13,64 +12,45 @@ type CardListProps = {
 
 export const CardList = ({ cards }: CardListProps) => {
   const navigate = useNavigate();
-  const { page, name, cardIndex } = useParams();
-  const [showDetailedCard, setShowDetailedCard] = useState(false);
-  const [cardId, setCardId] = useState<string | null>(null);
-  const theme = useContext(themeContext);
+  const { page, name, details } = useParams();
+  const { theme } = useContext(themeContext);
   const handleCloseDetailedCard = () => {
-    setShowDetailedCard(false);
-    setCardId(null);
-    navigate(`/search/${name}/${page}`);
+    if (details) {
+      navigate(`/search/${name}/${page}`, { preventScrollReset: true });
+    }
   };
 
   const handleNewDetailedCard = (
     newCardId: string,
-    index: number,
     event: React.MouseEvent
   ) => {
-    if (showDetailedCard && cardId === newCardId) {
-      setShowDetailedCard(false);
+    event.stopPropagation();
+
+    if (details && details.split('=')[1] === newCardId.toString()) {
+      navigate(`/search/${name}/${page}`, { preventScrollReset: true });
       return;
     }
-    event.stopPropagation();
-    setCardId(newCardId);
-    setShowDetailedCard(true);
-    navigate(`/search/${name}/${page}/details=${index + 1}`);
+    navigate(`/search/${name}/${page}/details=${newCardId}`, {
+      preventScrollReset: true,
+    });
   };
-
-  useEffect(() => {
-    if (cardIndex) {
-      const cardIndx = parseInt(cardIndex.split('=')[1]);
-      setCardId(cards[cardIndx - 1].id);
-      setShowDetailedCard(true);
-    }
-  }, []);
 
   if (cards.length === 0) {
     return <h2 className={styles.empty}>No characters found</h2>;
   }
 
   return (
-    <div className={styles.cardListSection}>
-      <div
-        className={`${styles.cardList} ${getThemeClass(theme, styles)}`}
-        onClick={handleCloseDetailedCard}
-      >
-        {cards.map((card, index) => (
-          <Card
-            key={card.id}
-            card={card}
-            index={index}
-            handleDetailedCard={handleNewDetailedCard}
-          />
-        ))}
-      </div>
-      {showDetailedCard && (
-        <DetailedCard
-          cardId={cardId}
-          handleCloseDetailedCard={handleCloseDetailedCard}
+    <div
+      className={`${styles.cardList} ${getThemeClass(theme, styles)}`}
+      onClick={handleCloseDetailedCard}
+    >
+      {cards.map((card) => (
+        <Card
+          key={card.id}
+          card={card}
+          handleDetailedCard={handleNewDetailedCard}
         />
-      )}
+      ))}
     </div>
   );
 };

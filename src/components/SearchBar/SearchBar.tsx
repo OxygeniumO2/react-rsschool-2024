@@ -1,28 +1,18 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSearchTextLS } from '../../customHooks/useSearchTextLS';
+import { useNavigate, useParams } from '@remix-run/react';
 import styles from './searchBar.module.css';
-import { useEffect } from 'react';
+import { useState } from 'react';
 
 export const SearchBar = () => {
-  const [searchText, setSearchText] = useSearchTextLS();
+  const params = useParams();
+  const charName = params.name?.split('"')[1];
+  const [searchText, setSearchText] = useState(charName || '');
 
   const navigate = useNavigate();
-  const params = useParams();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value.trim();
     setSearchText(searchText);
   };
-
-  useEffect(() => {
-    if (params.cardIndex) {
-      navigate(
-        `/search/name="${searchText}"/${params.page}/${params.cardIndex}`
-      );
-    } else {
-      navigate(`/search/name="${searchText}"/${params.page}`);
-    }
-  }, []);
 
   return (
     <div className={styles.searchBar}>

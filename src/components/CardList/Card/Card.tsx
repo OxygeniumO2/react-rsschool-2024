@@ -9,16 +9,11 @@ import { getThemeClass } from '../../../utils/getThemeClass';
 
 type CardProps = {
   card: Character;
-  index: number;
-  handleDetailedCard: (
-    cardId: string,
-    index: number,
-    event: React.MouseEvent
-  ) => void;
+  handleDetailedCard: (cardId: string, event: React.MouseEvent) => void;
 };
 
-export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
-  const theme = useContext(themeContext);
+export const Card = ({ card, handleDetailedCard }: CardProps) => {
+  const { theme } = useContext(themeContext);
   const { images, name, debut, personal } = card;
   const imageUrl = images.length > 0 ? images[0] : '/no-image.png';
 
@@ -32,7 +27,7 @@ export const Card = ({ card, index, handleDetailedCard }: CardProps) => {
   return (
     <div
       className={`${styles.cardContainer} ${getThemeClass(theme, styles)}`}
-      onClick={(event) => handleDetailedCard(card.id, index, event)}
+      onClick={(event) => handleDetailedCard(card.id, event)}
     >
       <div className={styles.cardImgContainer}>
         <img className={styles.cardImg} src={imageUrl} alt="cardImg" />
