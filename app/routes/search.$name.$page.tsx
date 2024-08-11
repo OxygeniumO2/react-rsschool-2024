@@ -10,6 +10,7 @@ import { GetCharactersResp, narutoAPI } from '../../src/services/narutoApi';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useNavigate } from '@remix-run/react';
 import { Loader } from '../../src/components/Loader/Loader';
+import { useEffect, useState } from 'react';
 
 export const loader = async ({
   params,
@@ -34,9 +35,21 @@ export default function SearchPage() {
   const navigation = useNavigation();
   const params = useParams();
   const { name, details } = params;
+  const [bigLoader, setBigLoader] = useState(false);
   const handlePageChange = ({ page }: { page: number }) => {
+    setBigLoader(() => true);
     navigate(`/search/${name}/${page}`);
   };
+
+  useEffect(() => {
+    if (navigation.state === 'idle') {
+      setBigLoader(() => false);
+    }
+  }, [navigation.state]);
+
+  if (bigLoader) {
+    return <Loader />;
+  }
 
   return (
     <>

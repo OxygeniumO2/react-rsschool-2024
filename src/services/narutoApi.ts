@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { DEFAULT_NUMBER_OF_ITEMS } from '../constants/constants';
 import baseUrl from './baseUrl';
 
@@ -33,19 +32,6 @@ export interface HandleCharactersDataParams {
   name?: string;
   reset?: boolean;
 }
-
-export const apiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl }),
-  endpoints: (builder) => ({
-    getCharacters: builder.query<GetCharactersResp, GetCharacters>({
-      query: ({ name = '', page = 1, limit = DEFAULT_NUMBER_OF_ITEMS }) =>
-        `/characters?limit=${limit}&name=${name}&page=${page}`,
-    }),
-    getCharacterById: builder.query<Character, string>({
-      query: (id: string) => `/characters/${id}`,
-    }),
-  }),
-});
 
 export const narutoAPI = {
   async getCharacters({

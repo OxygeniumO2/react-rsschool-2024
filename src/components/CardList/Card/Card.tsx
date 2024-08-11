@@ -22,7 +22,9 @@ export const Card = ({ card, handleDetailedCard }: CardProps) => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const isActiveCard = selectedCards.includes(card);
+  const isActiveCard = selectedCards.some(
+    (detailedCard) => detailedCard.id === card.id
+  );
 
   return (
     <div

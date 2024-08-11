@@ -1,16 +1,9 @@
-import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from '@remix-run/react';
 
 export const NotFoundPage = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate('/not-found');
-  }, []);
-
   return (
-    <div>
-      <h2>404 Page Not Found</h2>
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <h2 style={{ marginBottom: '30px' }}>404 Page Not Found</h2>
       <Link to="/">To main</Link>
     </div>
   );

@@ -1,4 +1,4 @@
-import { App } from '../src/App';
+import { AppModify } from '../src/App';
 import { render, screen } from '../src/utils/test-utilts';
 
 beforeAll(() => {
@@ -7,7 +7,7 @@ beforeAll(() => {
 
 describe('Main Component Tests', () => {
   it('renders main components correctly', () => {
-    render(<App />);
+    render(<AppModify>{null}</AppModify>);
 
     expect(screen.getByTestId('app')).toBeInTheDocument();
   });
