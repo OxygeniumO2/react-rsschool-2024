@@ -14,12 +14,7 @@ export const AppModify = ({ children }: { children: React.ReactNode }) => {
   return (
     <div data-testid="app" className={`app ${theme}`}>
       <div className="container">
-        <button
-          className="themeBtn"
-          onClick={() => {
-            changeTheme();
-          }}
-        >
+        <button className="themeBtn" onClick={changeTheme}>
           {theme.toUpperCase()}
         </button>
         <img className="logo" src="/naruto-logo.png" alt="naruto" />
