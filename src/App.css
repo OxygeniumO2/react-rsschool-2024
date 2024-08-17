@@ -1,38 +1,35 @@
 .container {
-  max-width: 1440px;
+  max-width: 1640px;
   margin: 0 auto;
-  padding: 0 20px 100px 20px;
+  padding: 20px 20px 0 20px;
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 30px;
 }
 
-li {
-  list-style-type: none;
-  padding: 6px 5px;
-  cursor: pointer;
-  background-color: #535bf2;
+.linkContainer {
+  background-color: #b5b5b5;
+  border-radius: 5px;
+  padding: 5px 0;
 }
 
-li:hover {
-  background-color: lightgray;
-}
-
-.pageLink {
+.pageLink,
+.mainPageLink {
   text-decoration: none;
+  width: fit-content;
+  margin: 0 auto;
   font-size: 2rem;
   display: block;
   text-align: center;
 }
 
-.pageLink:hover {
-  text-decoration: underline;
+.mainPageLink {
+  font-size: 1.5rem;
 }
 
-.suggestions {
-  position: absolute;
-  height: 400px;
-  overflow-y: auto;
+.pageLink:hover,
+.mainPageLink:hover {
+  text-decoration: underline;
 }
 
 #root {
@@ -53,8 +50,7 @@ li:hover {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button,
-a {
+button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -73,14 +69,115 @@ a {
 
 button:disabled {
   cursor: default;
-  background-color: #1c4c5b;
+  background-color: #302f2f5c;
 
   &:hover {
-    background-color: #1c4c5b;
-    border-color: #1c4c5b;
+    background-color: #302f2f5c;
+    border-color: #302f2f5c;
   }
 }
 
 a {
   text-decoration: none;
+}
+
+input {
+  padding: 5px;
+  width: 300px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  outline: none;
+  font-size: 1rem;
+}
+
+select {
+  font-size: 1rem;
+}
+
+input:focus {
+  border: 1px solid blue;
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.form div {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  gap: 15px;
+}
+
+.form div label {
+  text-align: right;
+  min-width: 240px;
+  font-weight: 600;
+}
+
+.form div select {
+  width: 100px;
+  height: 25px;
+  margin-right: auto;
+}
+
+input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.form button {
+  display: block;
+  margin-left: 150px;
+}
+
+input[type='file'] {
+  cursor: pointer;
+  padding: 2px;
+  border: none;
+}
+
+.form div .error {
+  position: absolute;
+  color: red;
+  top: 32px;
+  left: 260px;
+  min-width: 400px;
+}
+
+datalist {
+  position: absolute;
+  border-radius: 5px;
+  top: 60px;
+  max-height: 150px;
+  border: 1px solid gray;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+datalist option {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #babcd5;
+}
+
+datalist option:hover,
+datalist option:focus {
+  background-color: lightgray;
+}
+
+.mainColumnContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 45%;
+  background-color: #eee;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  height: fit-content;
 }

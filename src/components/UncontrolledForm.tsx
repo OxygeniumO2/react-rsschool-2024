@@ -6,7 +6,7 @@ export const UncontrolledForm = () => {
     <div className="container">
       <div>
         <Link className="pageLink" to="/">
-          Home
+          To Main Page
         </Link>
         <FormComponent />
       </div>

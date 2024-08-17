@@ -1,67 +1,11 @@
 import { FormEvent, useRef, useState } from 'react';
-import { AutocompleteCustom } from './AutocompleteCustom';
 
-import {
-  object,
-  string,
-  number,
-  mixed,
-  boolean,
-  ref,
-  ValidationError,
-} from 'yup';
+import { ValidationError } from 'yup';
 import { countriesData } from '../constants/countries';
-
-const validationSchema = object({
-  name: string()
-    .required('Name is required')
-    .test('capitalize', 'First letter must be uppercase', (value) =>
-      Boolean(value && value[0] === value[0].toUpperCase())
-    ),
-  age: number().required('Age is required').positive('Age must be positive'),
-  email: string().email('Invalid email address').required('Email is required'),
-  password: string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required')
-    .test(
-      '1 lower case',
-      'Password must contain at least 1 lower case letter',
-      (value) => Boolean(value && /[a-z]/.test(value))
-    )
-    .test(
-      '1 upper case',
-      'Password must contain at least 1 upper case letter',
-      (value) => Boolean(value && /[A-Z]/.test(value))
-    )
-    .test('1 letter', 'Password must contain at least 1 number', (value) =>
-      Boolean(value && /[0-9]/.test(value))
-    )
-    .test(
-      '1 speacial character',
-      'Password must contain at least 1 special character',
-      (value) => Boolean(value && /[!@#$%^&*]/.test(value))
-    ),
-  passwordMatch: string()
-    .oneOf([ref('password')], 'Passwords must match')
-    .required('Confirm password is required'),
-  gender: string().oneOf(['male', 'female'], 'Gender is required'),
-  terms: boolean().oneOf([true], 'You must accept the terms and conditions'),
-  country: string().required('Country is required').oneOf(countriesData),
-  pic: mixed().required('Picture is required'),
-});
-
-interface Errors {
-  name?: string;
-  age?: string;
-  email?: string;
-  password?: string;
-  passwordMatch?: string;
-  gender?: string;
-  terms?: string;
-  pic?: string;
-  country?: string;
-  serviceError?: string;
-}
+import { useDispatch } from 'react-redux';
+import { setUncontrolledFormData } from '../store/formsSlice';
+import { Errors, validationSchema } from '../utils/yupData';
+import { useNavigate } from 'react-router-dom';
 
 export const FormComponent = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -74,13 +18,8 @@ export const FormComponent = () => {
   const picRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLInputElement>(null);
   const [errors, setErrors] = useState<Errors>({});
-  const [isBlocked, setIsBlocked] = useState(true);
-
-  const handleAutoComplete = (value: string) => {
-    if (countryRef.current !== null) {
-      countryRef.current.value = value;
-    }
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -101,7 +40,16 @@ export const FormComponent = () => {
 
     try {
       await validationSchema.validate(formData, { abortEarly: false });
-      console.log(formData);
+      const fileReader = new FileReader();
+
+      fileReader.onload = async () => {
+        const base64String = fileReader.result as string;
+        const newFormData = { ...formData, pic: base64String };
+        dispatch(setUncontrolledFormData(newFormData));
+        navigate('/');
+      };
+
+      fileReader.readAsDataURL(formData.pic);
     } catch (errors) {
       const validationErrors: Record<string, string> = {};
 
@@ -110,41 +58,50 @@ export const FormComponent = () => {
           validationErrors[error.path ?? ''] = error.message;
         });
       }
-      setIsBlocked(() => true);
       setErrors(validationErrors);
     }
   };
   return (
-    <form onSubmit={handleSubmit} onChange={() => setIsBlocked(() => false)}>
+    <form onSubmit={handleSubmit} className="form">
       <div>
-        <label htmlFor="name">name </label>
+        <label htmlFor="name">Name: </label>
         <input type="text" id="name" ref={nameRef} />
         {errors.name && <div className="error">{errors.name}</div>}
       </div>
       <div>
-        <label htmlFor="age">age</label>
+        <label htmlFor="age">Age: </label>
         <input type="number" id="age" ref={ageRef} />
         {errors.age && <div className="error">{errors.age}</div>}
       </div>
       <div>
-        <label htmlFor="email">email</label>
+        <label htmlFor="email">E-mail: </label>
         <input type="email" id="email" ref={emailRef} />
         {errors.email && <div className="error">{errors.email}</div>}
       </div>
       <div>
-        <label htmlFor="password">password</label>
-        <input type="password" id="password" ref={passwordRef} />
+        <label htmlFor="password">Password: </label>
+        <input
+          type="password"
+          id="password"
+          ref={passwordRef}
+          autoComplete="password"
+        />
         {errors.password && <div className="error">{errors.password}</div>}
       </div>
       <div>
-        <label htmlFor="passwordMatch">passwordMatch</label>
-        <input type="password" id="passwordMatch" ref={passwordMatchRef} />
+        <label htmlFor="passwordMatch">Repeat password: </label>
+        <input
+          type="password"
+          id="passwordMatch"
+          ref={passwordMatchRef}
+          autoComplete="password"
+        />
         {errors.passwordMatch && (
           <div className="error">{errors.passwordMatch}</div>
         )}
       </div>
       <div>
-        Gender
+        <label htmlFor="gender">Gender: </label>
         <select id="gender" ref={genderRef}>
           <option value=""></option>
           <option value="male">Male</option>
@@ -153,26 +110,39 @@ export const FormComponent = () => {
         {errors.gender && <div className="error">{errors.gender}</div>}
       </div>
       <div>
-        <label htmlFor="terms">Terms and Conditions agreement</label>
+        <label htmlFor="terms">Terms and Conditions agreement:</label>
         <input type="checkbox" id="terms" ref={termsRef} />
         {errors.terms && <div className="error">{errors.terms}</div>}
       </div>
       <div>
-        <label htmlFor="pic">Picture</label>
-        <input type="file" id="pic" ref={picRef} />
+        <label htmlFor="pic">Picture: </label>
+        <input type="file" id="pic" accept=".jpg, .jpeg, .png" ref={picRef} />
         {errors.pic && <div className="error">{errors.pic}</div>}
       </div>
+      <div>
+        <label htmlFor="country">Country: </label>
+        <input
+          type="text"
+          list="countriesData"
+          id="country"
+          name="country"
+          ref={countryRef}
+          size={10}
+          autoComplete="off"
+        />
+        <datalist id="countriesData">
+          {countriesData.map((country) => (
+            <option key={country}>{country}</option>
+          ))}
+        </datalist>
+        {errors.country && (
+          <div className="error">
+            Country is required and must be from the list
+          </div>
+        )}
+      </div>
 
-      <AutocompleteCustom handleAutoComplete={handleAutoComplete} />
-      <input type="text" ref={countryRef} id="country" hidden />
-      {errors.country && (
-        <div className="error">
-          Country is required and must be from the list
-        </div>
-      )}
-      <button type="submit" disabled={isBlocked}>
-        Submit
-      </button>
+      <button type="submit">Submit</button>
     </form>
   );
 };
