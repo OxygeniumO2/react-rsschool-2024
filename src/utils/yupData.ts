@@ -79,21 +79,32 @@ export const validationSchema = object({
   gender: string().oneOf(['male', 'female'], 'Gender is required'),
   terms: boolean().oneOf([true], 'You must accept the terms and conditions'),
   country: string().required('Country is required').oneOf(countriesData),
-  pic: mixed<File>()
-    .test('required', 'File is required', (value) => {
-      if (value instanceof File) {
-        return Boolean(value);
-      }
-    })
-    .test('fileFormat', 'Unsupported file format', (value) => {
-      if (value instanceof File) {
-        const allowedFormats = ['image/png', 'image/jpeg', 'image/jpg'];
-        return allowedFormats.includes(value.type);
-      }
-    })
-    .test('fileSize', 'File size is larger than 512kb', (value) => {
-      if (value instanceof File) {
-        return value.size <= 512 * 1024;
-      }
-    }),
+  pic: mixed<File>().test('fileValidation', function (value) {
+    const { path, createError } = this;
+
+    if (!(value instanceof File)) {
+      return createError({
+        path,
+        message: 'File is required',
+      });
+    }
+
+    const allowedFormats = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (!allowedFormats.includes(value.type)) {
+      return createError({
+        path,
+        message: 'Unsupported file format',
+      });
+    }
+
+    const maxSizeInKB = 512;
+    if (value.size > maxSizeInKB * 1024) {
+      return createError({
+        path,
+        message: 'File size is larger than 512kb',
+      });
+    }
+
+    return true;
+  }),
 });

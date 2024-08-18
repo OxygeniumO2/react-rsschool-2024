@@ -91,7 +91,7 @@ export const ReactHookFormComponent = () => {
         <div className="error">{errors.email?.message}</div>
       </div>
 
-      <div style={{ marginBottom: '62px' }}>
+      <div style={{ marginBottom: '64px' }}>
         <label htmlFor="password">Password: </label>
         <input
           type="password"
@@ -99,7 +99,7 @@ export const ReactHookFormComponent = () => {
           {...register('password')}
           autoComplete="off"
         />
-        <div style={{ top: '53px' }} className="error">
+        <div style={{ top: '51px' }} className="error">
           {errors.password?.message}
         </div>
 
