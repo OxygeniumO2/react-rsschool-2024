@@ -1,0 +1,222 @@
+.container {
+  max-width: 1640px;
+  margin: 0 auto;
+  padding: 20px 20px 0 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.linkContainer {
+  background-color: #b5b5b5;
+  border-radius: 5px;
+  padding: 5px 0;
+}
+
+.pageLink,
+.mainPageLink {
+  text-decoration: none;
+  width: fit-content;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  display: block;
+  text-align: center;
+}
+
+.mainPageLink {
+  font-size: 1.3rem;
+}
+
+.pageLink:hover,
+.mainPageLink:hover {
+  text-decoration: underline;
+}
+
+#root {
+  transition: all 0.2s ease;
+  min-height: 100vh;
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: black;
+  background-color: white;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #535bf2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+
+  &:hover {
+    background-color: blue;
+  }
+}
+
+button:disabled {
+  cursor: default;
+  background-color: #302f2f5c;
+
+  &:hover {
+    background-color: #302f2f5c;
+    border-color: #302f2f5c;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+input {
+  padding: 5px;
+  width: 300px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  outline: none;
+  font-size: 1rem;
+}
+
+select {
+  font-size: 1rem;
+}
+
+input:focus {
+  border: 1px solid blue;
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.form div {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 45px;
+  gap: 15px;
+}
+
+.form div label {
+  text-align: right;
+  min-width: 240px;
+  font-weight: 600;
+}
+
+.form div select {
+  width: 100px;
+  height: 25px;
+  margin-right: auto;
+}
+
+input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.form button {
+  display: block;
+  margin-left: 150px;
+}
+
+input[type='file'] {
+  cursor: pointer;
+  padding: 2px;
+  border: none;
+}
+
+.form div .error {
+  position: absolute;
+  color: red;
+  top: 31px;
+  left: 260px;
+  min-width: 400px;
+}
+
+datalist {
+  position: absolute;
+  border-radius: 5px;
+  top: 60px;
+  max-height: 145px;
+  border: 1px solid gray;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+datalist option {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #babcd5;
+}
+
+datalist option:hover,
+datalist option:focus {
+  background-color: lightgray;
+}
+
+.mainColumnContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 45%;
+  background-color: #eee;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  height: fit-content;
+}
+
+.form .passwordStrength {
+  position: absolute;
+  top: 31px;
+  left: 260px;
+  gap: 5px;
+}
+
+.form span {
+  color: red;
+  font-weight: 600;
+}
+
+.form .weak span,
+.form .medium span,
+.form .strong span {
+  font-weight: 600;
+}
+
+.form .weak span {
+  color: red;
+}
+
+.form .medium span {
+  color: #cc8605;
+}
+
+.form .strong span {
+  color: green;
+}
+
+.pageTitle {
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 600;
+  font-style: italic;
+  margin-top: 10px;
+  color: darkblue;
+}
