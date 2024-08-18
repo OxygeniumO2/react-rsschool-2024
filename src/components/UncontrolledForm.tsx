@@ -8,6 +8,7 @@ export const UncontrolledForm = () => {
         <Link className="pageLink" to="/">
           To Main Page
         </Link>
+        <div className="pageTitle">Uncontrolled Form</div>
         <FormComponent />
       </div>
     </div>

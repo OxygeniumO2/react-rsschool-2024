@@ -15,7 +15,6 @@ type FormDataProps = {
 };
 
 export const FormCard = ({ formData, index }: FormDataProps) => {
-  console.log(formData);
   return (
     <div className={`card ${index === 0 ? 'lastCard' : ''}`}>
       <div className="cardImgContainer">

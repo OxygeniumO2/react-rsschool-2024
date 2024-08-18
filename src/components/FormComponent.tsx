@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setUncontrolledFormData } from '../store/formsSlice';
 import { Errors, validationSchema } from '../utils/yupData';
 import { useNavigate } from 'react-router-dom';
+import checkPasswordStrength from '../utils/passwordStrength';
 
 export const FormComponent = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -18,6 +19,8 @@ export const FormComponent = () => {
   const picRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLInputElement>(null);
   const [errors, setErrors] = useState<Errors>({});
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState<string | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,8 +38,6 @@ export const FormComponent = () => {
       country: countryRef.current?.value,
       pic: picRef.current!.files![0],
     };
-
-    console.log(formData);
 
     try {
       await validationSchema.validate(formData, { abortEarly: false });
@@ -58,27 +59,38 @@ export const FormComponent = () => {
           validationErrors[error.path ?? ''] = error.message;
         });
       }
+
       setErrors(validationErrors);
+      setIsDisabled(true);
+
+      if (passwordRef.current) {
+        setPasswordStrength(checkPasswordStrength(passwordRef.current.value));
+      }
     }
   };
+
   return (
-    <form onSubmit={handleSubmit} className="form">
+    <form
+      onSubmit={handleSubmit}
+      className="form"
+      onChange={() => setIsDisabled(false)}
+    >
       <div>
         <label htmlFor="name">Name: </label>
         <input type="text" id="name" ref={nameRef} />
-        {errors.name && <div className="error">{errors.name}</div>}
+        <div className="error">{errors.name}</div>
       </div>
       <div>
         <label htmlFor="age">Age: </label>
         <input type="number" id="age" ref={ageRef} />
-        {errors.age && <div className="error">{errors.age}</div>}
+        <div className="error">{errors.age}</div>
       </div>
       <div>
         <label htmlFor="email">E-mail: </label>
         <input type="email" id="email" ref={emailRef} />
-        {errors.email && <div className="error">{errors.email}</div>}
+        <div className="error">{errors.email}</div>
       </div>
-      <div>
+      <div style={{ marginBottom: '62px' }}>
         <label htmlFor="password">Password: </label>
         <input
           type="password"
@@ -86,7 +98,16 @@ export const FormComponent = () => {
           ref={passwordRef}
           autoComplete="password"
         />
-        {errors.password && <div className="error">{errors.password}</div>}
+        <div style={{ top: '53px' }} className="error">
+          {errors.password}
+        </div>
+        {passwordStrength && (
+          <div
+            className={`passwordStrength ${passwordStrength?.toLowerCase()}`}
+          >
+            Password is <span>{passwordStrength || 'Weak'}</span>
+          </div>
+        )}
       </div>
       <div>
         <label htmlFor="passwordMatch">Repeat password: </label>
@@ -96,9 +117,7 @@ export const FormComponent = () => {
           ref={passwordMatchRef}
           autoComplete="password"
         />
-        {errors.passwordMatch && (
-          <div className="error">{errors.passwordMatch}</div>
-        )}
+        <div className="error">{errors.passwordMatch}</div>
       </div>
       <div>
         <label htmlFor="gender">Gender: </label>
@@ -107,17 +126,17 @@ export const FormComponent = () => {
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
-        {errors.gender && <div className="error">{errors.gender}</div>}
+        <div className="error">{errors.gender}</div>
       </div>
       <div>
         <label htmlFor="terms">Terms and Conditions agreement:</label>
         <input type="checkbox" id="terms" ref={termsRef} />
-        {errors.terms && <div className="error">{errors.terms}</div>}
+        <div className="error">{errors.terms}</div>
       </div>
       <div>
         <label htmlFor="pic">Picture: </label>
         <input type="file" id="pic" accept=".jpg, .jpeg, .png" ref={picRef} />
-        {errors.pic && <div className="error">{errors.pic}</div>}
+        <div className="error">{errors.pic}</div>
       </div>
       <div>
         <label htmlFor="country">Country: </label>
@@ -127,12 +146,13 @@ export const FormComponent = () => {
           id="country"
           name="country"
           ref={countryRef}
-          size={10}
           autoComplete="off"
         />
         <datalist id="countriesData">
           {countriesData.map((country) => (
-            <option key={country}>{country}</option>
+            <option onClick={() => setIsDisabled(false)} key={country}>
+              {country}
+            </option>
           ))}
         </datalist>
         {errors.country && (
@@ -142,7 +162,9 @@ export const FormComponent = () => {
         )}
       </div>
 
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={isDisabled}>
+        Submit
+      </button>
     </form>
   );
 };

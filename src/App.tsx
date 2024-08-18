@@ -14,6 +14,9 @@ export default function App() {
             To Uncontrolled Form
           </Link>
         </div>
+        <div style={{ margin: 0 }} className="pageTitle">
+          Uncontrolled Form Data
+        </div>
         {data.uncontrolledFormData.map((item, index) => (
           <FormCard key={item.name} index={index} formData={item} />
         ))}
@@ -21,8 +24,11 @@ export default function App() {
       <div className="mainColumnContainer">
         <div className="linkContainer">
           <Link className="mainPageLink" to="/react-hook-form">
-            To React-hook-form
+            To React Hook Form
           </Link>
+        </div>
+        <div style={{ margin: 0 }} className="pageTitle">
+          React Hook Form Data
         </div>
         {data.reactHookFormData.map((item, index) => (
           <FormCard key={item.name} index={index} formData={item} />
