@@ -1,8 +1,5 @@
-import '@testing-library/jest-dom';
 import { it, expect, describe } from 'vitest';
 import { render } from '@testing-library/react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
 import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary';
 
 describe('ErrorBoundary', () => {

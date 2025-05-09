@@ -10,6 +10,10 @@
   flex-grow: 1;
 }
 
+.detailedCardContainer.dark {
+  background-color: #1c0a17;
+}
+
 .cardImgContainer {
   width: 200px;
   height: 150px;

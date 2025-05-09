@@ -1,45 +1,59 @@
-import {
-  Character,
-  GetCharactersResp,
-  HandleCharactersDataParams,
-} from '../../services/narutoApi';
+import { useNavigate, useParams } from 'react-router-dom';
+import { apiSlice } from '../../services/narutoApi';
 import { CardList } from '../CardList/CardList';
 import { Loader } from '../Loader/Loader';
 import { Pagination } from '../Pagination/Pagination';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setCharacters } from '../../store/charactersSlice';
 
-type CardListSectionProps = {
-  charactersData: GetCharactersResp | null;
-  isLoading: boolean;
-  handleCharactersData: (params: HandleCharactersDataParams) => void;
-  detailedCard: Character | null;
-  handleDetailedCard: (card: Character | null) => void;
-};
+export const CardListSection = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [page, setPage] = useState(params.page || 1);
+  const {
+    data: characters,
+    isLoading,
+    isFetching,
+    error,
+  } = apiSlice.useGetCharactersQuery({
+    page: page as number,
+    name: params?.name?.split('"')[1],
+  });
 
-export const CardListSection = ({
-  charactersData,
-  isLoading,
-  handleCharactersData,
-  detailedCard,
-  handleDetailedCard,
-}: CardListSectionProps) => {
-  const characters = charactersData ? charactersData.characters : [];
+  useEffect(() => {
+    if (characters) {
+      dispatch(setCharacters(characters.characters));
+    }
+  }, [characters]);
 
-  if (isLoading) {
+  useEffect(() => {
+    setPage(params.page || 1);
+  }, [params.page]);
+
+  if (isLoading || isFetching) {
     return <Loader />;
   }
 
+  if (!characters || error) {
+    return (
+      <h2 style={{ textAlign: 'center', marginTop: '50px' }}>
+        Sorry, API currently unavailable, or you have no internet connection
+      </h2>
+    );
+  }
+
+  const handlePage = ({ page }: { page: number }) => {
+    setPage(page);
+    navigate(`/search/name="${params?.name?.split('"')[1]}"/${page}`);
+  };
+
   return (
     <>
-      <CardList
-        cards={characters}
-        detailedCard={detailedCard}
-        handleDetailedCard={handleDetailedCard}
-      />
-      {charactersData && (
-        <Pagination
-          charactersData={charactersData}
-          onPageChange={handleCharactersData}
-        />
+      <CardList cards={characters.characters} />
+      {characters && (
+        <Pagination charactersData={characters} onPageChange={handlePage} />
       )}
     </>
   );

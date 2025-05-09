@@ -1,8 +1,5 @@
-import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
 import { vi } from 'vitest';
 import {
   generatePageNumbers,
